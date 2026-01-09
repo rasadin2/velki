@@ -26,16 +26,16 @@ define( 'WP_CACHE', true );
 /** The name of the database for WordPress */
 // define( 'DB_NAME', 'agentwco_dibi' );
 
-define( 'DB_NAME', 'agenlxic_agentwco_dibi' );
+define( 'DB_NAME', 'velki' );
 
 
 /** Database username */
 //define( 'DB_USER', 'agentwco_wagent9' );
- define( 'DB_USER', 'agenlxic_dibi' );
+ define( 'DB_USER', 'root' );
 
 /** Database password */
 //define( 'DB_PASSWORD', 'fQEW.eo.tqJ]' );
- define( 'DB_PASSWORD', ',P[T9MdCTuuS' );
+ define( 'DB_PASSWORD', '' );
 
 /** Database hostname */
 define( 'DB_HOST', 'localhost' );
