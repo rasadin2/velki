@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_network_requests",
+      "mcp__playwright__browser_evaluate",
+      "WebFetch(domain:agent9w.com)",
+      "SlashCommand(/sc:task make error message short. and it will show when form submit. and message will be red color.)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
