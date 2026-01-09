@@ -26,7 +26,11 @@ define( 'WP_CACHE', true );
 /** The name of the database for WordPress */
 // define( 'DB_NAME', 'agentwco_dibi' );
 
+<<<<<<< HEAD
 define( 'DB_NAME', 'velki' );
+=======
+define( 'DB_NAME', 'velkidb' );
+>>>>>>> 24f29cd184457f0164cdf85bb7d1b12b564dd737
 
 
 /** Database username */
