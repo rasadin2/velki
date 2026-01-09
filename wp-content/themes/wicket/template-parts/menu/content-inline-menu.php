@@ -1,3 +1,4 @@
+<div class="header-bg-box">
 <header id="masthead" class="wicket-header wicket-inline-menu">
 		<nav id="site-navigation" class="wicket-navbar">
 		    <div class="container">
@@ -35,7 +36,13 @@
 					<!--<div class="right-button"><a href="<?php echo esc_url( home_url( '/জরুরি-যোগাযোগ/' ) ); ?>">জরুরি যোগাযোগ</a></div>-->
 					 <div class="search-box"><?php echo do_shortcode( '[wpdreams_ajaxsearchlite]'); ?></div>
 				</div>
-				
+				<div class="head-right-button">
+				  <ul>
+					  <li class="login-btn"><a href="#"><span>Login</span></a></li>
+					  <li class="nibondon-btn"><a href="#">Register</a></li>
+				 </ul>
+		      </div>
 		    </div>
 		</nav>
 	</header><!-- #masthead -->
+	</div>
