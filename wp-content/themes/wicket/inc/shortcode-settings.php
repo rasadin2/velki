@@ -856,6 +856,56 @@ function wicket_shortcode_settings_page() {
             <p><strong>Custom Post Type:</strong> Navigate to <strong>WordPress Admin → Velki Agents</strong> to manage agents.</p>
         </div>
 
+        <!-- 15. Velki Featured Agents Section -->
+        <div class="shortcode-section">
+            <h2>15. Velki Featured Agents</h2>
+            <p><strong>Purpose:</strong> Displays one Admin and one Sub-Admin agent in a featured card layout with gradient backgrounds.</p>
+
+            <div class="shortcode-code">
+                [velki_featured_agents]
+            </div>
+
+            <p><strong>Features:</strong></p>
+            <ul>
+                <li>Displays exactly one Admin (এ্যাডমিন) agent</li>
+                <li>Displays exactly one Sub-Admin (সাব এ্যাডমিন) agent</li>
+                <li>Yellow/gold gradient background for Admin card</li>
+                <li>Blue gradient background for Sub-Admin card</li>
+                <li>White circular icon with user symbols</li>
+                <li>WhatsApp phone number display with copy functionality</li>
+                <li>WhatsApp message button (green)</li>
+                <li>Copy number button (gray) with visual feedback</li>
+                <li>Fully responsive two-column grid (stacks on mobile)</li>
+            </ul>
+
+            <h3>Design Details:</h3>
+            <ul>
+                <li>Admin card: Golden gradient (#f59e0b to #d97706)</li>
+                <li>Sub-Admin card: Blue gradient (#3b82f6 to #2563eb)</li>
+                <li>White circular icons (80x80px) with colored user symbols</li>
+                <li>Dark contact section (#1e293b) with phone number display</li>
+                <li>Dark button section (#0f172a) with action buttons</li>
+                <li>Green WhatsApp button (#10b981) with hover effects</li>
+                <li>Gray copy button (#334155) that turns green when clicked</li>
+                <li>Rounded corners (24px) and shadow effects</li>
+            </ul>
+
+            <h3>Required Meta Fields:</h3>
+            <ul>
+                <li><code>_agent_whatsapp_url_1</code> - Primary WhatsApp message URL (e.g., https://wa.me/18049722549)</li>
+            </ul>
+
+            <h3>Agent Groups Required:</h3>
+            <ul>
+                <li><strong>এ্যাডমিন</strong> - Admin (displays in yellow/gold card)</li>
+                <li><strong>সাব এ্যাডমিন</strong> - Sub-Admin (displays in blue card)</li>
+            </ul>
+
+            <p><strong>Note:</strong> This shortcode automatically selects the first agent from each group. Make sure you have at least one agent in each group for the shortcode to display properly.</p>
+
+            <p><strong>Usage:</strong> Simply add <code>[velki_featured_agents]</code> to any page or post where you want to display the featured agents.</p>
+        </div>
+
         <!-- Support Section -->
         <div class="shortcode-section">
             <h2>Need Help?</h2>

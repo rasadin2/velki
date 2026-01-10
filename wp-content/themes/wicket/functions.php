@@ -2598,3 +2598,370 @@ function velki_agent_list_inline_js() {
     <?php
 }
 
+
+/**
+ * Velki Featured Agents Shortcode
+ * Displays one Admin and one Sub-Admin agent in card layout
+ * Usage: [velki_featured_agents]
+ */
+function velki_featured_agents_shortcode($atts) {
+    ob_start();
+
+    // Query for one Admin agent
+    $admin_args = array(
+        'post_type' => 'velki-agent',
+        'posts_per_page' => 1,
+        'post_status' => 'publish',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'agent-group',
+                'field' => 'name',
+                'terms' => 'এ্যাডমিন',
+            ),
+        ),
+    );
+    $admin_query = new WP_Query($admin_args);
+
+    // Query for one Sub-Admin agent
+    $subadmin_args = array(
+        'post_type' => 'velki-agent',
+        'posts_per_page' => 1,
+        'post_status' => 'publish',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'agent-group',
+                'field' => 'name',
+                'terms' => 'সাব এ্যাডমিন',
+            ),
+        ),
+    );
+    $subadmin_query = new WP_Query($subadmin_args);
+
+    if (!$admin_query->have_posts() && !$subadmin_query->have_posts()) {
+        echo '<p>No featured agents found.</p>';
+        wp_reset_postdata();
+        return ob_get_clean();
+    }
+
+    echo '<div class="velki-featured-agents-container">';
+
+    // Display Admin agent
+    if ($admin_query->have_posts()) {
+        while ($admin_query->have_posts()) {
+            $admin_query->the_post();
+            $whatsapp_url_1 = get_post_meta(get_the_ID(), '_agent_whatsapp_url_1', true);
+            $phone_1 = $whatsapp_url_1 ? preg_replace('/[^0-9+]/', '', str_replace('https://wa.me/', '', $whatsapp_url_1)) : '';
+
+            ?>
+            <div class="velki-featured-card velki-featured-admin">
+                <div class="velki-featured-header">
+                    <div class="velki-featured-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="velki-featured-title-bn">ভেলকি এ্যাডমিন</h3>
+                    <p class="velki-featured-title-en">Velki Admin</p>
+                </div>
+
+                <div class="velki-featured-contact">
+                    <div class="velki-featured-contact-label">হোয়াটসঅ্যাপ নাম্বার</div>
+                    <div class="velki-featured-phone"><?php echo esc_html($phone_1); ?></div>
+                </div>
+
+                <div class="velki-featured-buttons">
+                    <a href="<?php echo esc_url($whatsapp_url_1); ?>" target="_blank" class="velki-featured-btn velki-featured-whatsapp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.304-1.654a11.882 11.882 0 005.713 1.456h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                        </svg>
+                        ভেলকি এ্যাডমিন
+                    </a>
+                    <button class="velki-featured-btn velki-featured-copy" data-copy="<?php echo esc_attr($phone_1); ?>" title="Copy number">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        নাম্বার কপি করুন
+                    </button>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+    // Display Sub-Admin agent
+    if ($subadmin_query->have_posts()) {
+        while ($subadmin_query->have_posts()) {
+            $subadmin_query->the_post();
+            $whatsapp_url_1 = get_post_meta(get_the_ID(), '_agent_whatsapp_url_1', true);
+            $phone_1 = $whatsapp_url_1 ? preg_replace('/[^0-9+]/', '', str_replace('https://wa.me/', '', $whatsapp_url_1)) : '';
+
+            ?>
+            <div class="velki-featured-card velki-featured-subadmin">
+                <div class="velki-featured-header">
+                    <div class="velki-featured-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 class="velki-featured-title-bn">ভেলকি সাব-এ্যাডমিন</h3>
+                    <p class="velki-featured-title-en">Velki Sub-Admin</p>
+                </div>
+
+                <div class="velki-featured-contact">
+                    <div class="velki-featured-contact-label">হোয়াটসঅ্যাপ নাম্বার</div>
+                    <div class="velki-featured-phone"><?php echo esc_html($phone_1); ?></div>
+                </div>
+
+                <div class="velki-featured-buttons">
+                    <a href="<?php echo esc_url($whatsapp_url_1); ?>" target="_blank" class="velki-featured-btn velki-featured-whatsapp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.304-1.654a11.882 11.882 0 005.713 1.456h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                        </svg>
+                        ভেলকি সাব-এ্যাডমিন
+                    </a>
+                    <button class="velki-featured-btn velki-featured-copy" data-copy="<?php echo esc_attr($phone_1); ?>" title="Copy number">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        নাম্বার কপি করুন
+                    </button>
+                </div>
+            </div>
+            <?php
+        }
+    }
+
+    echo '</div>';
+
+    wp_reset_postdata();
+
+    // Add CSS
+    velki_featured_agents_inline_css();
+
+    // Add JavaScript
+    velki_featured_agents_inline_js();
+
+    return ob_get_clean();
+}
+add_shortcode('velki_featured_agents', 'velki_featured_agents_shortcode');
+
+
+/**
+ * Inline CSS for Featured Agents
+ */
+function velki_featured_agents_inline_css() {
+    static $css_output = false;
+    if ($css_output) return;
+    $css_output = true;
+    ?>
+    <style>
+    .velki-featured-agents-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .velki-featured-card {
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .velki-featured-admin .velki-featured-header {
+        background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        padding: 40px 24px;
+        text-align: center;
+    }
+
+    .velki-featured-subadmin .velki-featured-header {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        padding: 40px 24px;
+        text-align: center;
+    }
+
+    .velki-featured-icon {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .velki-featured-admin .velki-featured-icon {
+        color: #f59e0b;
+    }
+
+    .velki-featured-subadmin .velki-featured-icon {
+        color: #3b82f6;
+    }
+
+    .velki-featured-title-bn {
+        font-size: 28px;
+        font-weight: 700;
+        color: white;
+        margin: 0 0 8px 0;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    .velki-featured-title-en {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.9);
+        margin: 0;
+    }
+
+    .velki-featured-contact {
+        background: #1e293b;
+        padding: 24px;
+        text-align: center;
+    }
+
+    .velki-featured-contact-label {
+        font-size: 14px;
+        color: #94a3b8;
+        margin-bottom: 8px;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    .velki-featured-phone {
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        letter-spacing: 1px;
+    }
+
+    .velki-featured-buttons {
+        background: #0f172a;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .velki-featured-btn {
+        padding: 14px 24px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    .velki-featured-whatsapp {
+        background: #10b981;
+        color: white;
+    }
+
+    .velki-featured-whatsapp:hover {
+        background: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+
+    .velki-featured-copy {
+        background: #334155;
+        color: white;
+    }
+
+    .velki-featured-copy:hover {
+        background: #475569;
+        transform: translateY(-2px);
+    }
+
+    .velki-featured-copy.copied {
+        background: #10b981;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .velki-featured-agents-container {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 16px;
+        }
+
+        .velki-featured-title-bn {
+            font-size: 24px;
+        }
+
+        .velki-featured-phone {
+            font-size: 20px;
+        }
+
+        .velki-featured-btn {
+            font-size: 14px;
+            padding: 12px 20px;
+        }
+    }
+    </style>
+    <?php
+}
+
+
+/**
+ * Inline JavaScript for Featured Agents
+ */
+function velki_featured_agents_inline_js() {
+    static $js_output = false;
+    if ($js_output) return;
+    $js_output = true;
+    ?>
+    <script>
+    (function() {
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.velki-featured-copy')) {
+                e.preventDefault();
+                const btn = e.target.closest('.velki-featured-copy');
+                const textToCopy = btn.getAttribute('data-copy');
+
+                // Create temporary textarea
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+
+                try {
+                    document.execCommand('copy');
+
+                    // Visual feedback
+                    const originalHTML = btn.innerHTML;
+                    btn.classList.add('copied');
+                    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> কপি হয়েছে!';
+
+                    setTimeout(function() {
+                        btn.classList.remove('copied');
+                        btn.innerHTML = originalHTML;
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+
+                document.body.removeChild(textarea);
+            }
+        });
+    })();
+    </script>
+    <?php
+}
