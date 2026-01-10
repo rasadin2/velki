@@ -2965,3 +2965,678 @@ function velki_featured_agents_inline_js() {
     </script>
     <?php
 }
+
+
+/**
+ * WordPress Post Generator
+ * Adds admin menu and functionality to generate 20 sample posts
+ */
+
+// Add admin menu
+add_action('admin_menu', 'velki_post_generator_menu');
+function velki_post_generator_menu() {
+    add_menu_page(
+        'Generate Posts',           // Page title
+        'Generate Posts',           // Menu title
+        'manage_options',           // Capability
+        'velki-post-generator',     // Menu slug
+        'velki_post_generator_page', // Callback function
+        'dashicons-admin-post',     // Icon
+        30                          // Position
+    );
+}
+
+// Admin page content
+function velki_post_generator_page() {
+    ?>
+    <div class="wrap">
+        <h1>Generate Sample Posts</h1>
+        <p>Click the button below to generate 20 sample blog posts.</p>
+
+        <?php
+        // Handle form submission
+        if (isset($_POST['generate_posts']) && check_admin_referer('velki_generate_posts_action', 'velki_generate_posts_nonce')) {
+            $result = velki_generate_sample_posts();
+            if ($result['success']) {
+                echo '<div class="notice notice-success"><p>' . esc_html($result['message']) . '</p></div>';
+            } else {
+                echo '<div class="notice notice-error"><p>' . esc_html($result['message']) . '</p></div>';
+            }
+        }
+        ?>
+
+        <form method="post" action="">
+            <?php wp_nonce_field('velki_generate_posts_action', 'velki_generate_posts_nonce'); ?>
+            <p>
+                <button type="submit" name="generate_posts" class="button button-primary button-hero">
+                    <span class="dashicons dashicons-admin-post" style="margin-top: 4px;"></span>
+                    Generate 20 Posts
+                </button>
+            </p>
+        </form>
+
+        <div class="card" style="max-width: 600px; margin-top: 20px;">
+            <h2>What will be generated?</h2>
+            <ul>
+                <li>20 sample blog posts</li>
+                <li>Random titles from a predefined list</li>
+                <li>Lorem ipsum content for each post</li>
+                <li>Published status (immediately visible)</li>
+                <li>Current date and time</li>
+                <li>Default category assignment</li>
+            </ul>
+        </div>
+    </div>
+
+    <style>
+        .button-hero .dashicons {
+            font-size: 20px;
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+    <?php
+}
+
+// Generate 20 sample posts
+function velki_generate_sample_posts() {
+    // Sample post titles
+    $titles = array(
+        'Getting Started with WordPress',
+        'Top 10 Web Design Trends',
+        'How to Improve Your Website Speed',
+        'Essential SEO Tips for Beginners',
+        'The Future of Web Development',
+        'Best Practices for Mobile Design',
+        'Understanding User Experience',
+        'Creating Engaging Content',
+        'WordPress Security Best Practices',
+        'Building Responsive Websites',
+        'Introduction to CSS Grid',
+        'JavaScript Fundamentals',
+        'Optimizing Images for Web',
+        'Email Marketing Strategies',
+        'Social Media Marketing Tips',
+        'Content Marketing Guide',
+        'Web Accessibility Basics',
+        'E-commerce Website Design',
+        'Digital Marketing Trends',
+        'Website Analytics Explained',
+    );
+
+    // Sample content paragraphs
+    $content_paragraphs = array(
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+        'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+        'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet.',
+    );
+
+    $created_count = 0;
+    $errors = array();
+
+    for ($i = 0; $i < 20; $i++) {
+        // Get random title (cycle through if needed)
+        $title = $titles[$i % count($titles)];
+        if ($i >= count($titles)) {
+            $title .= ' - Part ' . (floor($i / count($titles)) + 1);
+        }
+
+        // Generate random content (3-5 paragraphs)
+        $num_paragraphs = rand(3, 5);
+        $content = '';
+        for ($j = 0; $j < $num_paragraphs; $j++) {
+            $content .= '<p>' . $content_paragraphs[array_rand($content_paragraphs)] . '</p>' . "\n\n";
+        }
+
+        // Create post
+        $post_data = array(
+            'post_title'    => $title,
+            'post_content'  => $content,
+            'post_status'   => 'publish',
+            'post_author'   => get_current_user_id(),
+            'post_type'     => 'post',
+            'post_category' => array(1), // Default category
+        );
+
+        $post_id = wp_insert_post($post_data);
+
+        if (is_wp_error($post_id)) {
+            $errors[] = $post_id->get_error_message();
+        } else {
+            $created_count++;
+        }
+    }
+
+    if ($created_count === 20) {
+        return array(
+            'success' => true,
+            'message' => 'Successfully generated 20 posts!'
+        );
+    } elseif ($created_count > 0) {
+        return array(
+            'success' => true,
+            'message' => "Generated {$created_count} posts. " . count($errors) . " failed."
+        );
+    } else {
+        return array(
+            'success' => false,
+            'message' => 'Failed to generate posts. Errors: ' . implode(', ', $errors)
+        );
+    }
+}
+
+
+/**
+ * Velki Blog Listing Shortcode with Load More
+ * Usage: [velki_blog_listing posts_per_page="6"]
+ */
+function velki_blog_listing_shortcode($atts) {
+    $atts = shortcode_atts(
+        array(
+            'posts_per_page' => 6,
+            'category' => '',
+        ),
+        $atts,
+        'velki_blog_listing'
+    );
+
+    ob_start();
+
+    echo '<div class="velki-blog-listing-wrapper">';
+    echo '<div class="velki-blog-grid" id="velki-blog-grid" data-page="1" data-posts-per-page="' . esc_attr($atts['posts_per_page']) . '" data-category="' . esc_attr($atts['category']) . '">';
+
+    // Initial posts query
+    $args = array(
+        'post_type' => 'post',
+        'posts_per_page' => intval($atts['posts_per_page']),
+        'paged' => 1,
+        'post_status' => 'publish',
+    );
+
+    if (!empty($atts['category'])) {
+        $args['category_name'] = $atts['category'];
+    }
+
+    $query = new WP_Query($args);
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            velki_blog_card_template();
+        }
+
+        // Show load more button if there are more posts
+        if ($query->max_num_pages > 1) {
+            echo '</div>'; // Close grid
+            echo '<div class="velki-blog-load-more-wrapper">';
+            echo '<button class="velki-blog-load-more" data-max-pages="' . esc_attr($query->max_num_pages) . '">';
+            echo '<span class="dashicons dashicons-update"></span> আরও ব্লগ দেখুন';
+            echo '</button>';
+            echo '<div class="velki-blog-loading" style="display: none;">লোড হচ্ছে...</div>';
+            echo '</div>';
+        } else {
+            echo '</div>'; // Close grid
+        }
+    } else {
+        echo '<p>কোন ব্লগ পোস্ট পাওয়া যায়নি।</p>';
+        echo '</div>'; // Close grid
+    }
+
+    wp_reset_postdata();
+
+    echo '</div>'; // Close wrapper
+
+    // Add CSS and JS
+    velki_blog_listing_inline_css();
+    velki_blog_listing_inline_js();
+
+    return ob_get_clean();
+}
+add_shortcode('velki_blog_listing', 'velki_blog_listing_shortcode');
+
+
+/**
+ * Blog card template
+ */
+function velki_blog_card_template() {
+    $categories = get_the_category();
+    $first_category = !empty($categories) ? $categories[0] : null;
+
+    // Category colors
+    $category_colors = array(
+        'yellow' => '#eab308',
+        'blue' => '#3b82f6',
+        'purple' => '#a855f7',
+        'green' => '#10b981',
+        'orange' => '#f97316',
+        'pink' => '#ec4899',
+    );
+
+    $color_keys = array_keys($category_colors);
+    $category_color = $first_category ? $category_colors[$color_keys[($first_category->term_id - 1) % count($color_keys)]] : '#eab308';
+
+    ?>
+    <article class="velki-blog-card">
+        <div class="velki-blog-image">
+            <?php if (has_post_thumbnail()) : ?>
+                <?php the_post_thumbnail('medium_large'); ?>
+            <?php else : ?>
+                <div class="velki-blog-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                    <span>No Image</span>
+                </div>
+            <?php endif; ?>
+            <?php if ($first_category) : ?>
+                <span class="velki-blog-category" style="background-color: <?php echo esc_attr($category_color); ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                        <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                    <?php echo esc_html($first_category->name); ?>
+                </span>
+            <?php endif; ?>
+        </div>
+
+        <div class="velki-blog-content">
+            <h3 class="velki-blog-title">
+                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+            </h3>
+
+            <div class="velki-blog-excerpt">
+                <?php echo wp_trim_words(get_the_excerpt(), 20, '...'); ?>
+            </div>
+
+            <div class="velki-blog-meta">
+                <div class="velki-blog-meta-left">
+                    <span class="velki-blog-date">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <?php echo get_the_date('j F, Y'); ?>
+                    </span>
+                    <span class="velki-blog-author">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <?php echo get_the_author(); ?>
+                    </span>
+                </div>
+
+                <a href="<?php the_permalink(); ?>" class="velki-blog-read-more">
+                    আরও পড়ুন
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </article>
+    <?php
+}
+
+
+/**
+ * AJAX handler for load more
+ */
+add_action('wp_ajax_velki_load_more_posts', 'velki_load_more_posts');
+add_action('wp_ajax_nopriv_velki_load_more_posts', 'velki_load_more_posts');
+
+function velki_load_more_posts() {
+    check_ajax_referer('velki_blog_nonce', 'nonce');
+
+    $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 6;
+    $category = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
+
+    $args = array(
+        'post_type' => 'post',
+        'posts_per_page' => $posts_per_page,
+        'paged' => $page,
+        'post_status' => 'publish',
+    );
+
+    if (!empty($category)) {
+        $args['category_name'] = $category;
+    }
+
+    $query = new WP_Query($args);
+
+    if ($query->have_posts()) {
+        ob_start();
+        while ($query->have_posts()) {
+            $query->the_post();
+            velki_blog_card_template();
+        }
+        $html = ob_get_clean();
+
+        wp_send_json_success(array(
+            'html' => $html,
+            'max_pages' => $query->max_num_pages,
+            'current_page' => $page,
+        ));
+    } else {
+        wp_send_json_error(array('message' => 'No more posts'));
+    }
+
+    wp_reset_postdata();
+    wp_die();
+}
+
+
+/**
+ * Inline CSS for Blog Listing
+ */
+function velki_blog_listing_inline_css() {
+    static $css_output = false;
+    if ($css_output) return;
+    $css_output = true;
+    ?>
+    <style>
+    .velki-blog-listing-wrapper {
+        padding: 40px 20px;
+        background: #0f172a;
+        min-height: 400px;
+    }
+
+    .velki-blog-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .velki-blog-card {
+        background: #1e293b;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .velki-blog-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .velki-blog-image {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 16/10;
+    }
+
+    .velki-blog-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .velki-blog-card:hover .velki-blog-image img {
+        transform: scale(1.1);
+    }
+
+    .velki-blog-placeholder {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        color: #64748b;
+    }
+
+    .velki-blog-placeholder svg {
+        opacity: 0.5;
+    }
+
+    .velki-blog-placeholder span {
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .velki-blog-category {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    .velki-blog-content {
+        padding: 24px;
+    }
+
+    .velki-blog-title {
+        margin: 0 0 12px 0;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.4;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    .velki-blog-title a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .velki-blog-title a:hover {
+        color: #eab308;
+    }
+
+    .velki-blog-excerpt {
+        color: #94a3b8;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    .velki-blog-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 16px;
+        border-top: 1px solid #334155;
+    }
+
+    .velki-blog-meta-left {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+    }
+
+    .velki-blog-date,
+    .velki-blog-author {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .velki-blog-date svg,
+    .velki-blog-author svg {
+        opacity: 0.7;
+    }
+
+    .velki-blog-read-more {
+        color: #eab308;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: gap 0.3s ease;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    .velki-blog-read-more:hover {
+        gap: 10px;
+    }
+
+    .velki-blog-load-more-wrapper {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .velki-blog-load-more {
+        background: #eab308;
+        color: #0f172a;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    .velki-blog-load-more .dashicons {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .velki-blog-load-more:hover {
+        background: #ca8a04;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(234, 179, 8, 0.3);
+    }
+
+    .velki-blog-load-more:disabled {
+        background: #334155;
+        color: #64748b;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .velki-blog-loading {
+        color: #eab308;
+        font-size: 16px;
+        margin-top: 16px;
+        font-family: 'Noto Sans Bengali', sans-serif;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .velki-blog-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .velki-blog-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .velki-blog-listing-wrapper {
+            padding: 24px 16px;
+        }
+
+        .velki-blog-title {
+            font-size: 18px;
+        }
+
+        .velki-blog-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+    }
+    </style>
+    <?php
+}
+
+
+/**
+ * Inline JavaScript for Blog Listing
+ */
+function velki_blog_listing_inline_js() {
+    static $js_output = false;
+    if ($js_output) return;
+    $js_output = true;
+    ?>
+    <script>
+    (function($) {
+        $(document).on('click', '.velki-blog-load-more', function() {
+            var button = $(this);
+            var grid = $('#velki-blog-grid');
+            var currentPage = parseInt(grid.attr('data-page'));
+            var maxPages = parseInt(button.attr('data-max-pages'));
+            var postsPerPage = grid.attr('data-posts-per-page');
+            var category = grid.attr('data-category');
+            var loadingDiv = $('.velki-blog-loading');
+
+            if (currentPage >= maxPages) {
+                return;
+            }
+
+            var nextPage = currentPage + 1;
+
+            // Show loading
+            button.prop('disabled', true);
+            loadingDiv.show();
+
+            $.ajax({
+                url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                type: 'POST',
+                data: {
+                    action: 'velki_load_more_posts',
+                    nonce: '<?php echo wp_create_nonce('velki_blog_nonce'); ?>',
+                    page: nextPage,
+                    posts_per_page: postsPerPage,
+                    category: category
+                },
+                success: function(response) {
+                    if (response.success) {
+                        grid.append(response.data.html);
+                        grid.attr('data-page', nextPage);
+
+                        // Hide button if no more pages
+                        if (nextPage >= response.data.max_pages) {
+                            button.fadeOut();
+                        }
+                    }
+                },
+                error: function() {
+                    alert('একটি ত্রুটি ঘটেছে। আবার চেষ্টা করুন।');
+                },
+                complete: function() {
+                    button.prop('disabled', false);
+                    loadingDiv.hide();
+                }
+            });
+        });
+    })(jQuery);
+    </script>
+    <?php
+}

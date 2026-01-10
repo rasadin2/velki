@@ -906,6 +906,99 @@ function wicket_shortcode_settings_page() {
             <p><strong>Usage:</strong> Simply add <code>[velki_featured_agents]</code> to any page or post where you want to display the featured agents.</p>
         </div>
 
+        <!-- 16. Velki Blog Listing Section -->
+        <div class="shortcode-section">
+            <h2>16. Velki Blog Listing with Load More</h2>
+            <p><strong>Purpose:</strong> Displays blog posts in a responsive 3-column grid with AJAX-powered "Load More" functionality.</p>
+
+            <div class="shortcode-code">
+                [velki_blog_listing posts_per_page="6"]
+            </div>
+
+            <div class="shortcode-attributes">
+                <h3>Attributes:</h3>
+                <table class="attribute-table">
+                    <tr>
+                        <th>Attribute</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Default</th>
+                    </tr>
+                    <tr>
+                        <td><code>posts_per_page</code></td>
+                        <td>Number</td>
+                        <td>Number of posts to load initially and per "Load More" click</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td><code>category</code></td>
+                        <td>String</td>
+                        <td>Category slug to filter posts (optional)</td>
+                        <td>Empty (all categories)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="shortcode-example">
+                <h3>Usage Examples:</h3>
+                <p><strong>Display 6 posts initially:</strong></p>
+                <code>[velki_blog_listing]</code>
+
+                <p><strong>Display 9 posts initially:</strong></p>
+                <code>[velki_blog_listing posts_per_page="9"]</code>
+
+                <p><strong>Filter by category:</strong></p>
+                <code>[velki_blog_listing category="news"]</code>
+
+                <p><strong>Combined attributes:</strong></p>
+                <code>[velki_blog_listing posts_per_page="12" category="technology"]</code>
+            </div>
+
+            <p><strong>Features:</strong></p>
+            <ul>
+                <li>3-column responsive grid (2 columns on tablet, 1 on mobile)</li>
+                <li>Dark theme design matching Velki aesthetic</li>
+                <li>Featured image with hover zoom effect</li>
+                <li>Colored category badges (auto-assigned colors)</li>
+                <li>Post title, excerpt, date, and author</li>
+                <li>Yellow "আরও পড়ুন" (Read More) link</li>
+                <li>AJAX-powered "আরও ব্লগ দেখুন" (Load More) button</li>
+                <li>Smooth card hover animations</li>
+                <li>Loading indicator during AJAX requests</li>
+                <li>Automatic button hiding when all posts loaded</li>
+            </ul>
+
+            <h3>Design Details:</h3>
+            <ul>
+                <li>Dark background: #0f172a</li>
+                <li>Card background: #1e293b</li>
+                <li>Rounded corners: 16px</li>
+                <li>Category badge colors: Yellow, Blue, Purple, Green, Orange, Pink</li>
+                <li>Yellow accent color: #eab308</li>
+                <li>Hover effect: Card lifts 8px with shadow</li>
+                <li>Image aspect ratio: 16:10</li>
+                <li>Bengali font support (Noto Sans Bengali)</li>
+            </ul>
+
+            <h3>AJAX Functionality:</h3>
+            <ul>
+                <li>Load More button loads additional posts without page reload</li>
+                <li>Posts append to existing grid smoothly</li>
+                <li>Button shows loading state during request</li>
+                <li>Button automatically hides when all posts are loaded</li>
+                <li>Error handling with Bengali error messages</li>
+            </ul>
+
+            <p><strong>Requirements:</strong></p>
+            <ul>
+                <li>WordPress posts with featured images recommended</li>
+                <li>Categories assigned to posts for colored badges</li>
+                <li>jQuery (included with WordPress)</li>
+            </ul>
+
+            <p><strong>Note:</strong> Use the "Generate Posts" feature (WordPress Admin → Generate Posts) to create sample blog posts for testing this shortcode.</p>
+        </div>
+
         <!-- Support Section -->
         <div class="shortcode-section">
             <h2>Need Help?</h2>
