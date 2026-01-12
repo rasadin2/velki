@@ -447,7 +447,7 @@ h1 {
 }
 
 h2 {
-	font-size: 28px;
+	font-size: 26px;
 	line-height: 1.45;
 }
 
@@ -537,7 +537,6 @@ table th {
 table, th, td {
 	text-align: left;
 	border: 1px solid #d9d9d9;
-	color: #000;
 	font-size: 16px;
 	line-height: 29px;
 	font-weight: normal;
@@ -545,7 +544,7 @@ table, th, td {
 	padding: 6px 15px;
 }
 table tr:nth-child(2n) {
-	background: #f7fcff;
+    background: #030712;
 }
 .form-group {
 	margin-bottom: 2rem;
@@ -586,7 +585,6 @@ html {
 }
 
 body {
-	background:#FFF1CD;
 	/* Fallback for when there is no custom background color defined. */
 }
 
@@ -1119,3 +1117,69 @@ span.value-2 > a {
 }
 
 
+.faqs-box-gradient{
+	background: linear-gradient(135deg, #1E2939 0%, #101828 100%);
+	border: 0.8px solid rgba(254, 198, 17, 0.2);
+}
+.home-btn a{
+	background:transparent !important;
+	text-decoration:none !important;
+}
+.yellow-bg-color{
+	background: linear-gradient(180deg, #FEC611 0%, #FFB800 100%);
+}
+
+.velki-blog-card {
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(135deg, #1E2939 0%, #101828 100%) !important;
+    border: 0.8px solid #364153 !important;
+}
+.velki-blog-listing-wrapper {
+    padding: 0px 20px !important;
+    background: #030712 !important;
+    min-height: 400px;
+}
+.velki-blog-excerpt {
+    color: #99A1AF !important;
+}
+.single-post{
+	background: #030712;
+}
+.single-post .entry-content,
+.single-post ul li, 
+.single-post ol li,
+.single-post p{
+	color:#D1D5DB;
+}
+.single-post h1, .single-post h2, .single-post h3, .single-post h4, .single-post h5, .single-post h6 {
+    margin: 30px 0 15px 0;
+    clear: both;
+    color: #ffffff;
+    line-height: 1.4;
+    font-weight: 700;
+    font-family: "Noto Sans Bengali", sans-serif!important;
+}
+.single-post .blog-container {
+    max-width:930px;
+    margin: 0 auto;
+	padding:50px 50px;
+}
+.single-post .f-image img{
+	width:100%;
+	border-radius:16px;
+}
+.single-post img {
+    box-sizing: border-box;
+    height: auto;
+    max-width: 100%;
+    vertical-align: bottom;
+    border-radius: 16px;
+}
+.velki-agent-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #1E2939 0%, #101828 100%) !important;
+    border-radius: 24px !importan;
+    border: 0.8px solid #364153 !important;
+}

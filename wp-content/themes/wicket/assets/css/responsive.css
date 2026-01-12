@@ -77,13 +77,13 @@
 .body-number-step-section .number-step-section:first-child .number-colume-border:after {
     left: 35% !important;
 }	
+.agent-left-section {
+    width:100%;
+}
 }
 /*Tab Portrait*/
 @media only screen and (max-width:991px) {
-.footer-colume-4 .new-account-widgets {
-    padding: 40px 15px;
-	margin-top: -119px;
-}
+
 .new-account-widgets .title-content {
     margin-bottom: 11px;
     font-size: 25px;
@@ -137,6 +137,33 @@
 .body-number-step-section .number-step-section:first-child .number-colume-border:after {
     left:50% !important;
 }	
+.footer-colume-2 {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+.footer-colume-1 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+.footer-colume-3 {
+    padding-left: 36px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+.footer-colume-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+}
+body .velki-blog-listing-wrapper {
+    padding: 0px 0px !important;
+}
 }
 /*Tab Portrait*/
 @media only screen and (max-width:768px) {
@@ -154,11 +181,17 @@
     padding-left: 15px;
 }
 .footer-copyright-widgets1 .textwidget {
-    margin-top: 38px;
-	margin-bottom: 58px;
+     margin-top: 0;
+     margin-bottom: 0;
 }
 .wicket-navbar-brand {
     max-width: 126px;
+}
+ul#menu-bottom-menu {
+    justify-content: center;
+}
+.wicket-footer-widget .widget_media_image{
+	margin-bottom:20px;
 }
 .search-box input {
    width:100%;
@@ -182,7 +215,7 @@
 .search-form {
     margin-left: 15px;
     display: flex;
-    margin-right: 7px;
+    margin-right: 15px;
 }
 .wicket-footer {
     text-align: center;
@@ -380,6 +413,80 @@ section.no-results.not-found {
     border: 2px solid #FEBE1E;
     border-radius: 50px;
 }
+.search-box-wrap {
+    min-width: 100%;
+    margin-top: -8px;
+    margin-bottom: 18px;
+}
+body .wicket-brand-wrap {
+    height: 86px;
+}
+.footer-colume-1 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.footer-colume-2 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.footer-colume-3 {
+    padding-left:15px;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.footer-colume-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+.menu-social-media-container ul {
+    justify-content: center;
+}
+.wicket-footer .widget {
+    margin: 0 0 0;
+}
+.menu-social-media-container ul {
+    margin: 20px 0 36px 0px;
+}
+.star-rating-box .elementor-image-box-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+}
+.star-rating-box .elementor-image-box-content {
+    width: 70%;
+}
+.star-rating-box .elementor-image-box-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    text-align: left !important;
+}
+.wicket-footer-widget.widget_media_image {
+    margin-bottom: 27px;
+}
+.velki-faq-question-text {
+    line-height: 28px !important;
+}
+.velki-faq-wrapper {
+    padding: 15px 0px !important;
+}
+
+.single-post .blog-container {
+    padding: 50px 15px !important;
+}
+.single-post .blog-container h2 {
+    font-size: 20px;
+    line-height: 1.45;
+}
+.single-post .blog-container p {
+    padding: 0;
+    margin: 0 0 15px 0;
+}
 }
 /*Mobile View Small*/
 @media only screen and (max-width:360px) {
@@ -395,6 +502,7 @@ section.no-results.not-found {
 .list-box .focus-part .user-id {
     min-width: 70px;
 }
+
 }
 /*Mobile Tiny Small*/
 @media only screen and (max-width:320px) {
