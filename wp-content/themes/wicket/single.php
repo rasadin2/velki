@@ -2,7 +2,14 @@
 get_header();
 
 global $post; // Access the global $post variable
-if (get_post_type($post) == 'ninequiz') {
+
+// Check if it's a regular blog post and use the blog details template
+if (get_post_type($post) == 'post') {
+    while ( have_posts() ) {
+        the_post();
+        get_template_part( 'template-parts/post/content', 'single' );
+    }
+} elseif (get_post_type($post) == 'ninequiz') {
 
 // Get meta field values
 // $quiz_date = get_post_meta(get_the_ID(), 'quiz_date', true);

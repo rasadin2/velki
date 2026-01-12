@@ -1,0 +1,602 @@
+/**
+ * Blog Details Page Styles
+ * Theme: Wicket
+ *
+ * This file contains all styles for the single blog post details page
+ * matching the provided design with dark theme and Bengali typography support.
+ */
+
+/* ==========================================================================
+   Blog Details Article Container
+   ========================================================================== */
+
+.blog-details-article {
+    background-color: #1a1d2e;
+    color: #ffffff;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+}
+
+/* ==========================================================================
+   Back Button
+   ========================================================================== */
+
+.blog-back-button {
+    padding: 20px 24px;
+    background-color: #1a1d2e;
+}
+
+.blog-back-button .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+}
+
+.blog-back-button .back-link:hover {
+    opacity: 0.8;
+}
+
+.blog-back-button .back-link svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Featured Image
+   ========================================================================== */
+
+.blog-featured-image {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 24px 0;
+    overflow: hidden;
+    border-radius: 12px;
+    padding: 0 24px;
+}
+
+.blog-featured-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    object-fit: cover;
+    max-height: 400px;
+}
+
+/* ==========================================================================
+   Blog Meta Information
+   ========================================================================== */
+
+.blog-meta-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.blog-meta-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.blog-meta-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Category Badge */
+.blog-category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f59e0b;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.blog-category-badge svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* Date */
+.blog-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.blog-date svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* Blog Type Icon */
+.blog-type-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.blog-type-icon svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* Share Button */
+.blog-share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f59e0b;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.blog-share-button:hover {
+    background-color: #d97706;
+    transform: translateY(-2px);
+}
+
+.blog-share-button:active {
+    transform: translateY(0);
+}
+
+.blog-share-button svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Blog Title
+   ========================================================================== */
+
+.blog-entry-header {
+    padding: 24px 24px 16px 24px;
+}
+
+.blog-entry-title {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================================================
+   Blog Content
+   ========================================================================== */
+
+.blog-entry-content {
+    padding: 16px 24px 32px 24px;
+    color: #e5e7eb;
+    line-height: 1.8;
+}
+
+.blog-entry-content h2,
+.blog-entry-content h3,
+.blog-entry-content h4,
+.blog-entry-content h5,
+.blog-entry-content h6 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    line-height: 1.4;
+}
+
+.blog-entry-content h2 {
+    font-size: 24px;
+    margin-top: 40px;
+}
+
+.blog-entry-content h3 {
+    font-size: 20px;
+}
+
+.blog-entry-content h4 {
+    font-size: 18px;
+}
+
+.blog-entry-content p {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #d1d5db;
+}
+
+.blog-entry-content ul,
+.blog-entry-content ol {
+    margin: 20px 0;
+    padding-left: 24px;
+}
+
+.blog-entry-content li {
+    margin-bottom: 12px;
+    color: #d1d5db;
+}
+
+.blog-entry-content a {
+    color: #f59e0b;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.blog-entry-content a:hover {
+    color: #d97706;
+}
+
+.blog-entry-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 24px 0;
+}
+
+.blog-entry-content blockquote {
+    border-left: 4px solid #f59e0b;
+    padding-left: 20px;
+    margin: 24px 0;
+    font-style: italic;
+    color: #9ca3af;
+}
+
+.blog-entry-content code {
+    background-color: #2d3748;
+    color: #f59e0b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+}
+
+.blog-entry-content pre {
+    background-color: #2d3748;
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 24px 0;
+}
+
+.blog-entry-content pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Page Links (Pagination) */
+.page-links {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #374151;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.page-links a,
+.page-links > span {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #2d3748;
+    color: #ffffff;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.page-links a:hover {
+    background-color: #f59e0b;
+}
+
+.page-links .current {
+    background-color: #f59e0b;
+}
+
+/* ==========================================================================
+   Blog Footer (Tags)
+   ========================================================================== */
+
+.blog-entry-footer {
+    padding: 24px;
+    border-top: 1px solid #374151;
+    margin-top: 32px;
+}
+
+.blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    color: #9ca3af;
+}
+
+.blog-tags a {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #2d3748;
+    color: #ffffff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.blog-tags a:hover {
+    background-color: #f59e0b;
+}
+
+/* ==========================================================================
+   Responsive Design - Tablets
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .blog-back-button {
+        padding: 16px 20px;
+    }
+
+    .blog-featured-image {
+        padding: 0 20px;
+        margin-bottom: 20px;
+    }
+
+    .blog-featured-image img {
+        max-height: 300px;
+    }
+
+    .blog-meta-wrapper {
+        padding: 12px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .blog-meta-right {
+        width: 100%;
+    }
+
+    .blog-share-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .blog-entry-header {
+        padding: 20px 20px 12px 20px;
+    }
+
+    .blog-entry-title {
+        font-size: 24px;
+    }
+
+    .blog-entry-content {
+        padding: 12px 20px 28px 20px;
+    }
+
+    .blog-entry-content h2 {
+        font-size: 22px;
+        margin-top: 32px;
+    }
+
+    .blog-entry-content h3 {
+        font-size: 18px;
+    }
+
+    .blog-entry-footer {
+        padding: 20px;
+    }
+}
+
+/* ==========================================================================
+   Responsive Design - Mobile
+   ========================================================================== */
+
+@media (max-width: 480px) {
+    .blog-back-button {
+        padding: 12px 16px;
+    }
+
+    .blog-back-button .back-link {
+        font-size: 14px;
+    }
+
+    .blog-featured-image {
+        padding: 0 16px;
+        margin-bottom: 16px;
+        border-radius: 8px;
+    }
+
+    .blog-featured-image img {
+        max-height: 250px;
+        border-radius: 8px;
+    }
+
+    .blog-meta-wrapper {
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    .blog-meta-left {
+        gap: 12px;
+    }
+
+    .blog-category-badge,
+    .blog-date,
+    .blog-type-icon {
+        font-size: 12px;
+    }
+
+    .blog-category-badge svg,
+    .blog-date svg,
+    .blog-type-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .blog-share-button {
+        font-size: 13px;
+        padding: 8px 16px;
+    }
+
+    .blog-share-button svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .blog-entry-header {
+        padding: 16px 16px 12px 16px;
+    }
+
+    .blog-entry-title {
+        font-size: 20px;
+        line-height: 1.3;
+    }
+
+    .blog-entry-content {
+        padding: 12px 16px 24px 16px;
+        font-size: 15px;
+    }
+
+    .blog-entry-content h2 {
+        font-size: 20px;
+        margin-top: 28px;
+    }
+
+    .blog-entry-content h3 {
+        font-size: 18px;
+    }
+
+    .blog-entry-content h4 {
+        font-size: 16px;
+    }
+
+    .blog-entry-content p {
+        font-size: 15px;
+        margin-bottom: 16px;
+    }
+
+    .blog-entry-footer {
+        padding: 16px;
+    }
+
+    .page-links {
+        flex-wrap: wrap;
+    }
+
+    .page-links a,
+    .page-links > span {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+}
+
+/* ==========================================================================
+   Bengali Typography Support
+   ========================================================================== */
+
+.blog-details-article {
+    font-family: 'SolaimanLipi', 'Kalpurush', 'Noto Sans Bengali', Arial, sans-serif;
+}
+
+/* Ensure proper Bengali text rendering */
+.blog-entry-title,
+.blog-entry-content h1,
+.blog-entry-content h2,
+.blog-entry-content h3,
+.blog-entry-content h4,
+.blog-entry-content h5,
+.blog-entry-content h6,
+.blog-entry-content p,
+.blog-entry-content li {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+    .blog-back-button,
+    .blog-share-button,
+    .blog-entry-footer {
+        display: none;
+    }
+
+    .blog-details-article {
+        background-color: #ffffff;
+        color: #000000;
+    }
+
+    .blog-entry-title,
+    .blog-entry-content h2,
+    .blog-entry-content h3,
+    .blog-entry-content h4 {
+        color: #000000;
+    }
+
+    .blog-entry-content p,
+    .blog-entry-content li {
+        color: #333333;
+    }
+}
+
+/* ==========================================================================
+   Accessibility Enhancements
+   ========================================================================== */
+
+.blog-share-button:focus,
+.blog-back-button .back-link:focus {
+    outline: 2px solid #f59e0b;
+    outline-offset: 2px;
+}
+
+.screen-reader-text {
+    clip: rect(1px, 1px, 1px, 1px);
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .blog-category-badge,
+    .blog-share-button {
+        border: 2px solid #ffffff;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .blog-share-button,
+    .blog-back-button .back-link,
+    .blog-entry-content a {
+        transition: none;
+    }
+}
