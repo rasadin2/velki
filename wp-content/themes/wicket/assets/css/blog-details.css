@@ -142,25 +142,25 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: #fbbf24;
-    color: #000000;
+    background-color: transparent;
+    color: #9ca3af;
     border: none;
-    padding: 10px 20px;
+    padding: 0;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .blog-share-btn:hover {
-    background-color: #f59e0b;
-    transform: translateY(-2px);
+    color: #ffffff;
+    opacity: 0.8;
 }
 
 .blog-share-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
 }
 
 /* Share Menu Dropdown */
@@ -394,25 +394,25 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: #fbbf24;
-    color: #000000;
+    background-color: transparent;
+    color: #9ca3af;
     border: none;
-    padding: 10px 20px;
+    padding: 0;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .blog-share-btn-footer:hover {
-    background-color: #f59e0b;
-    transform: translateY(-2px);
+    color: #ffffff;
+    opacity: 0.8;
 }
 
 .blog-share-btn-footer svg {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
 }
 
 /* Bottom Navigation */
@@ -460,11 +460,6 @@
         align-items: flex-start;
     }
 
-    .blog-share-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
     .blog-header {
         padding: 16px 30px;
     }
@@ -484,11 +479,6 @@
     .blog-share-section {
         flex-direction: column;
         align-items: flex-start;
-    }
-
-    .blog-share-btn-footer {
-        width: 100%;
-        justify-content: center;
     }
 
     .share-menu {
@@ -551,7 +541,6 @@
 
     .blog-share-btn {
         font-size: 13px;
-        padding: 9px 18px;
     }
 
     .share-menu {
@@ -612,7 +601,6 @@
 
     .blog-share-btn-footer {
         font-size: 13px;
-        padding: 9px 18px;
     }
 
     .view-all-blogs {

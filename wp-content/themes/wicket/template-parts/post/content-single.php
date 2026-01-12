@@ -42,7 +42,8 @@
 			?>
 				<span class="meta-category">
 					<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M2 4H14M2 8H14M2 12H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+						<rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+						<path d="M2 6H14M6 2V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
 					</svg>
 					<?php echo esc_html( $categories[0]->name ); ?>
 				</span>
@@ -70,8 +71,11 @@
 		<!-- Share Button with Dropdown -->
 		<div class="blog-share-wrapper">
 			<button class="blog-share-btn" onclick="toggleShareMenu(event)">
-				<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M4 12V17H16V12M8 6L10 4L12 6M10 4V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+				<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="8" cy="3" r="2" stroke="currentColor" stroke-width="1.5"/>
+					<circle cx="3" cy="13" r="2" stroke="currentColor" stroke-width="1.5"/>
+					<circle cx="13" cy="13" r="2" stroke="currentColor" stroke-width="1.5"/>
+					<path d="M6.5 4.5L4.5 11.5M9.5 4.5L11.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
 				</svg>
 				<span><?php _e('শেয়ার করুন', 'wicket'); ?></span>
 			</button>
@@ -116,8 +120,11 @@
 		<div class="blog-share-section">
 			<span class="share-text"><?php _e('এই আর্টিকেলটি শেয়ার করুন', 'wicket'); ?></span>
 			<button class="blog-share-btn-footer" onclick="sharePost()">
-				<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-					<path d="M4 12V17H16V12M8 6L10 4L12 6M10 4V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+				<svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<circle cx="8" cy="3" r="2" stroke="currentColor" stroke-width="1.5"/>
+					<circle cx="3" cy="13" r="2" stroke="currentColor" stroke-width="1.5"/>
+					<circle cx="13" cy="13" r="2" stroke="currentColor" stroke-width="1.5"/>
+					<path d="M6.5 4.5L4.5 11.5M9.5 4.5L11.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
 				</svg>
 				<span><?php _e('শেয়ার করুন', 'wicket'); ?></span>
 			</button>
