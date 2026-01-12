@@ -237,7 +237,7 @@ function wicket_public_scripts() {
 
     // Enqueue blog details CSS on single blog posts
     if ( is_single() && get_post_type() === 'post' ) {
-        wp_enqueue_style( 'wicket-blog-details', get_template_directory_uri() . '/assets/css/blog-details.css', array('wicket-style'), '1.0.0' );
+        wp_enqueue_style( 'wicket-blog-details', get_template_directory_uri() . '/assets/css/blog-details.css', array('wicket-style'), '2.0.0' );
     }
 	
 	
