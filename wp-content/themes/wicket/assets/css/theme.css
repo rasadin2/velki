@@ -1612,6 +1612,69 @@ table, th, td {
     border-radius: 15px;
     border: 4px solid #ffffff;
 }
-.offer-slider-icon-wrapper a{
+.offer-slider-description {
+    margin-bottom:15px !important;
+}
+.offer-slider-track a{
 	text-decoration:none !important;
+}
+.offer-slider-card-title {
+    color: #101828;
+}
+.offer-slider-description {
+    flex: none !important;
+}
+.agent-photo-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 1e-05);
+    box-shadow: 0px 0px 0px 4px #364153;
+    border-radius: 16px;
+}
+
+.contact-number {
+    color: #ffffff;
+    background: #1E2939;
+    border-radius: 10px;
+    padding: 7px 20px;
+}
+.contact-item {
+    background: transparent !important;
+    border-radius: 8px;
+    padding: 0 !important;
+}
+.copy-btn {
+    border-radius: 8px !important;
+}
+.whatsapp-message-btn {
+    background: #25D366 !important;
+}
+.agent-verified-badge {
+    position: absolute;
+    bottom: -8px;
+	    left: auto !important;
+    right: -22px !important;
+    transform: translateX(-50%);
+    color: #1e293b;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #1e293b !important;
+	background: linear-gradient(180deg, #FEC611 0%, #FFB800 100%) !important;
+}
+.agent-left-section {
+    align-items: center !important;
+}
+.messenger-column .contact-header {
+    color: #D1D5DC !important;
+}
+.agent-contact-section {
+    gap: 16px !important;
+    flex: 1;
+}
+.message-btn {
+    border-radius: 10px !important;
 }
