@@ -1537,6 +1537,8 @@ table, th, td {
 }
 .single-post .wicket-site-content {
     margin: 0 auto;
+    max-width: 930px;
+    background-color: #030712;
 }
 .blog-details-article {
     background-color: #030712;
@@ -1546,7 +1548,9 @@ table, th, td {
     max-width: 100%;
     min-height: 100vh;
 }
-
+.blog-details-article {
+    background-color: #030712;
+}
 .offer-slider-prize-section {
     background: #f0f9ff;
     border-left: 0px solid #3b82f6;
@@ -1677,4 +1681,73 @@ table, th, td {
 }
 .message-btn {
     border-radius: 10px !important;
+}
+.experience-box{
+    padding: 20px 30px !important;
+    max-width:520px;
+    margin: 0 auto !important;
+    background: #FFFFFF;
+    border: 0.8px solid #E5E7EB;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+    border-radius: 16px !important;
+}
+
+.official-support-text .elementor-heading-title{
+	background: linear-gradient(90deg, #101828 0%, #1C398E 50%, #59168B 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+}
+.player-support-text{
+	background: linear-gradient(90deg, #101828 0%, #364153 50%, #101828 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+}
+.velkiu-text{
+	background: linear-gradient(90deg, #101828 0%, #7E2A0C 50%, #101828 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+}
+
+.social-box-thum{
+	background: #FFFFFF;
+border: 0.8px solid #F3F4F6;
+box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 8px 10px -6px rgba(0, 0, 0, 0.1);
+border-radius: 24px;
+}
+
+.velki-faq-item {
+    background: #1E2939 !important;
+    border: 0.8px solid #364153 !important;;
+    border-radius: 10px !important;;
+}
+.velki-faq-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #fbbf24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    display: none !important;
+}
+.velki-faq-toggle {
+    width: 18px !important;
+    height: 20px;
+    border-radius: 50%;
+    background: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+.velki-faq-answer-content {
+    padding: 0 24px 24px 25px !important ;
 }
