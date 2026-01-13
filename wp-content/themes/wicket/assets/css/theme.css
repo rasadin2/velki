@@ -1518,3 +1518,236 @@ table, th, td {
 .agent-contact-section a{
 	text-decoration:none !important;
 }
+
+.velki-agent-card {
+    align-items: center;
+}
+.velki-agent-card .agent-photo-wrapper img {
+    border-radius: 16px;
+}
+.contact-item {
+    border-radius: 8px;
+    padding: 5px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.offer-slider-wrapper {
+    padding: 0px 0px !important;
+}
+.single-post .wicket-site-content {
+    margin: 0 auto;
+    max-width: 930px;
+    background-color: #030712;
+}
+.blog-details-article {
+    background-color: #030712;
+    color: #ffffff;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+    min-height: 100vh;
+}
+.blog-details-article {
+    background-color: #030712;
+}
+.offer-slider-prize-section {
+    background: #f0f9ff;
+    border-left: 0px solid #3b82f6;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, #F0FDF4 0%, #ECFDF5 100%);
+    border: 0.8px solid #B9F8CF !important;
+    border-radius: 14px;
+}
+.offer-slider-prize-section .offer-slider-prize-amount {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00A63E;
+}
+.offer-slider-card {
+    overflow: hidden;
+    background: #FFFFFF;
+    box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border-radius: 24px !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+.offer-slider-wrapper .offer-slider-header-img {
+    height: 256px;
+}
+.offer-slider-icon-wrapper {
+    width: 70px;
+    height: 70px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    margin-top: -116px !important;
+    position: relative;
+}
+
+.offer-slider-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+	 background: linear-gradient(90deg, #AD46FF 0%, #F6339A 100%);
+	opacity: 0.65;
+	box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 8px 10px -6px rgba(0, 0, 0, 0.1);
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.offer-slider-icon-wrapper {
+    border-radius: 15px;
+    border: 4px solid #ffffff;
+}
+.offer-slider-description {
+    margin-bottom:15px !important;
+}
+.offer-slider-track a{
+	text-decoration:none !important;
+}
+.offer-slider-card-title {
+    color: #101828;
+}
+.offer-slider-description {
+    flex: none !important;
+}
+.agent-photo-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 1e-05);
+    box-shadow: 0px 0px 0px 4px #364153;
+    border-radius: 16px;
+}
+
+.contact-number {
+    color: #ffffff;
+    background: #1E2939;
+    border-radius: 10px;
+    padding: 7px 20px;
+}
+.contact-item {
+    background: transparent !important;
+    border-radius: 8px;
+    padding: 0 !important;
+}
+.copy-btn {
+    border-radius: 8px !important;
+}
+.whatsapp-message-btn {
+    background: #25D366 !important;
+}
+.agent-verified-badge {
+    position: absolute;
+    bottom: -8px;
+	    left: auto !important;
+    right: -22px !important;
+    transform: translateX(-50%);
+    color: #1e293b;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #1e293b !important;
+	background: linear-gradient(180deg, #FEC611 0%, #FFB800 100%) !important;
+}
+.agent-left-section {
+    align-items: center !important;
+}
+.messenger-column .contact-header {
+    color: #D1D5DC !important;
+}
+.agent-contact-section {
+    gap: 16px !important;
+    flex: 1;
+}
+.message-btn {
+    border-radius: 10px !important;
+}
+.experience-box{
+    padding: 20px 30px !important;
+    max-width:520px;
+    margin: 0 auto !important;
+    background: #FFFFFF;
+    border: 0.8px solid #E5E7EB;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+    border-radius: 16px !important;
+}
+
+.official-support-text .elementor-heading-title{
+	background: linear-gradient(90deg, #101828 0%, #1C398E 50%, #59168B 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+}
+.player-support-text{
+	background: linear-gradient(90deg, #101828 0%, #364153 50%, #101828 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+}
+.velkiu-text{
+	background: linear-gradient(90deg, #101828 0%, #7E2A0C 50%, #101828 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+}
+
+.social-box-thum{
+	background: #FFFFFF;
+border: 0.8px solid #F3F4F6;
+box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 8px 10px -6px rgba(0, 0, 0, 0.1);
+border-radius: 24px;
+}
+
+.velki-faq-item {
+    background: #1E2939 !important;
+    border: 0.8px solid #364153 !important;;
+    border-radius: 10px !important;;
+}
+.velki-faq-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #fbbf24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    display: none !important;
+}
+.velki-faq-toggle {
+    width: 18px !important;
+    height: 20px;
+    border-radius: 50%;
+    background: transparent !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+.velki-faq-answer-content {
+    padding: 0 24px 24px 25px !important ;
+}
