@@ -10,6 +10,7 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class('blog-details-article'); ?>>
 
 	<!-- Back Button - Simple style matching screenshot -->
+	<div class="blog-back-button-wrap">
 	<div class="blog-back-button">
 		<?php
 		$archive_link = get_post_type_archive_link('post');
@@ -24,7 +25,8 @@
 			<span>সব ব্লগ দেখুন</span>
 		</a>
 	</div>
-
+   </div>
+   <div class="full-container-blog">
 	<!-- Featured Image -->
 	<?php if ( has_post_thumbnail() ) : ?>
 		<div class="blog-featured-image">
@@ -140,7 +142,7 @@
 			</a>
 		</div>
 	</footer>
-
+   </div>
 </article>
 
 <script>

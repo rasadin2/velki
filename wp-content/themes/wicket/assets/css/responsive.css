@@ -487,6 +487,28 @@ body .wicket-brand-wrap {
     padding: 0;
     margin: 0 0 15px 0;
 }
+.full-container-blog .blog-featured-image {
+    position: relative;
+    height: auto;
+}
+.full-container-blog .blog-title {
+    font-size: 28px;
+}
+.blog-back-button-wrap {
+    padding: 20px 20px 20px;
+}
+.full-container-blog {
+    max-width: 930px;
+    margin: 0 auto;
+    padding: 48px 15px;
+}
+.agent-id-section {
+    justify-content: center;
+}
+.search-results .wicket-site-content {
+    background-color: #030712;
+    padding: 80px 15px 50px;
+}
 }
 /*Mobile View Small*/
 @media only screen and (max-width:360px) {
