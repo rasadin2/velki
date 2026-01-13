@@ -3645,3 +3645,146 @@ function velki_blog_listing_inline_js() {
     </script>
     <?php
 }
+
+/**
+ * Enhanced search for velki-agent post type
+ *
+ * Search Behavior:
+ * - Searches the FULL search string (not word-by-word)
+ * - Matches if the complete search string appears ANYWHERE in the data
+ * - Minimum 3 characters required for search
+ *
+ * Searchable Fields:
+ * - Post Title/Name
+ * - Agent ID (_agent_id)
+ * - WhatsApp Message URL 1 (_agent_whatsapp_url_1)
+ * - WhatsApp Message URL 2 (_agent_whatsapp_url_2)
+ * - Messenger Message URL (_agent_messenger_url)
+ *
+ * Examples:
+ * - Search "804" → Finds "18049722549" in WhatsApp URL
+ * - Search "velki" → Finds "velkiagents.pro" in Messenger URL
+ * - Search "wa.me" → Finds "https://wa.me/..." in WhatsApp URLs
+ * - Search "মাস্টার" → Finds "মাস্টার এজেন্ট" in title
+ * - Search "180497" → Finds "18049722549" (full string match within data)
+ */
+function wicket_velki_agent_enhanced_search( $query ) {
+    // Only for velki-agent search on frontend
+    if ( ! $query->is_search() || is_admin() || ! $query->is_main_query() ) {
+        return;
+    }
+
+    // Set post type to velki-agent
+    $query->set( 'post_type', 'velki-agent' );
+
+    $search_term = $query->get( 's' );
+
+    // Only proceed if search term has 3 or more characters
+    if ( empty( $search_term ) || strlen( $search_term ) < 3 ) {
+        return;
+    }
+
+    // Get all velki-agent posts that match meta fields or title
+    global $wpdb;
+
+    $meta_keys = array(
+        '_agent_id',
+        '_agent_whatsapp_url_1',
+        '_agent_whatsapp_url_2',
+        '_agent_messenger_url'
+    );
+
+    // Build SQL to find posts matching any meta field OR title
+    $meta_conditions = array();
+    foreach ( $meta_keys as $meta_key ) {
+        $meta_conditions[] = $wpdb->prepare(
+            "(pm.meta_key = %s AND pm.meta_value LIKE %s)",
+            $meta_key,
+            '%' . $wpdb->esc_like( $search_term ) . '%'
+        );
+    }
+
+    // Combined SQL for both title and meta search with relevance scoring
+    // Scoring system (highest to lowest priority):
+    // - Exact match in WhatsApp/Messenger URL: 150 points (phone numbers)
+    // - Exact match in title: 100 points
+    // - Exact match in agent ID: 100 points
+    // - WhatsApp/Messenger URL contains search term: 90 points
+    // - Title starts with search term: 50 points
+    // - Agent ID contains search term: 40 points
+    // - Title contains search term: 25 points
+    $search_sql = $wpdb->prepare(
+        "
+        SELECT DISTINCT p.ID,
+        (
+            CASE
+                WHEN p.post_title = %s THEN 100
+                WHEN p.post_title LIKE %s THEN 50
+                WHEN p.post_title LIKE %s THEN 25
+                ELSE 0
+            END
+            +
+            CASE
+                WHEN (SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = p.ID AND meta_key = '_agent_id' LIMIT 1) = %s THEN 100
+                WHEN (SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = p.ID AND meta_key = '_agent_id' LIMIT 1) LIKE %s THEN 40
+                ELSE 0
+            END
+            +
+            CASE
+                WHEN (SELECT COUNT(*) FROM {$wpdb->postmeta}
+                      WHERE post_id = p.ID
+                      AND meta_key IN ('_agent_whatsapp_url_1', '_agent_whatsapp_url_2', '_agent_messenger_url')
+                      AND (
+                          meta_value LIKE CONCAT('%%/', %s)
+                          OR meta_value LIKE CONCAT('%%/', %s, '%%')
+                          OR meta_value = %s
+                      )
+                     ) > 0 THEN 150
+                WHEN (SELECT COUNT(*) FROM {$wpdb->postmeta}
+                      WHERE post_id = p.ID
+                      AND meta_key IN ('_agent_whatsapp_url_1', '_agent_whatsapp_url_2', '_agent_messenger_url')
+                      AND meta_value LIKE %s
+                     ) > 0 THEN 90
+                ELSE 0
+            END
+        ) AS relevance_score
+        FROM {$wpdb->posts} p
+        LEFT JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+        WHERE p.post_type = 'velki-agent'
+        AND p.post_status = 'publish'
+        AND (
+            p.post_title LIKE %s
+            OR (" . implode( ' OR ', $meta_conditions ) . ")
+        )
+        ORDER BY relevance_score DESC, p.post_title ASC
+        ",
+        $search_term,                                           // Exact title match
+        $wpdb->esc_like( $search_term ) . '%',                 // Title starts with
+        '%' . $wpdb->esc_like( $search_term ) . '%',          // Title contains
+        $search_term,                                           // Exact agent ID
+        '%' . $wpdb->esc_like( $search_term ) . '%',          // Agent ID contains
+        $search_term,                                           // URL ends with search term (exact phone match)
+        $search_term,                                           // URL has /search_term/ pattern
+        $search_term,                                           // URL exact match
+        '%' . $wpdb->esc_like( $search_term ) . '%',          // URL contains anywhere
+        '%' . $wpdb->esc_like( $search_term ) . '%'           // Main search condition
+    );
+
+    $results = $wpdb->get_results( $search_sql );
+    $post_ids = wp_list_pluck( $results, 'ID' );
+
+    // If we found matching posts, set them as the search results
+    if ( ! empty( $post_ids ) ) {
+        $query->set( 'post__in', $post_ids );
+        // Preserve the order from our custom query (best match first)
+        $query->set( 'orderby', 'post__in' );
+        $query->set( 'posts_per_page', -1 );
+        // Keep search term but clear the search SQL to prevent WordPress from filtering again
+        add_filter( 'posts_search', '__return_empty_string', 20, 2 );
+    } else {
+        // No results found, force empty result
+        $query->set( 'post__in', array( 0 ) );
+        add_filter( 'posts_search', '__return_empty_string', 20, 2 );
+    }
+}
+add_action( 'pre_get_posts', 'wicket_velki_agent_enhanced_search', 15 );

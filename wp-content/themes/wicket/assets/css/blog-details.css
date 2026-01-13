@@ -84,50 +84,29 @@
     flex-wrap: wrap;
 }
 
-/* Category Badge - Orange pill */
-.meta-category {
+/* Meta Elements - Unified Styling */
+.meta-category,
+.meta-date,
+.meta-type,
+.meta-author {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background-color: #f59e0b;
-    color: #000000;
+    color: #9ca3af;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.meta-category {
+    background-color: transparent;
     padding: 6px 14px;
     border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
 }
 
-.meta-category svg {
-    width: 14px;
-    height: 14px;
-}
-
-/* Date */
-.meta-date {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #9ca3af;
-    font-size: 13px;
-    font-weight: 400;
-}
-
-.meta-date svg {
-    width: 14px;
-    height: 14px;
-}
-
-/* Blog Type */
-.meta-type {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #9ca3af;
-    font-size: 13px;
-    font-weight: 400;
-}
-
-.meta-type svg {
+.meta-category svg,
+.meta-date svg,
+.meta-type svg,
+.meta-author svg {
     width: 14px;
     height: 14px;
 }
@@ -522,19 +501,21 @@
         gap: 12px;
     }
 
-    .meta-category {
+    .meta-category,
+    .meta-date,
+    .meta-type,
+    .meta-author {
         font-size: 12px;
-        padding: 5px 12px;
     }
 
-    .meta-date,
-    .meta-type {
-        font-size: 12px;
+    .meta-category {
+        padding: 5px 12px;
     }
 
     .meta-category svg,
     .meta-date svg,
-    .meta-type svg {
+    .meta-type svg,
+    .meta-author svg {
         width: 12px;
         height: 12px;
     }
@@ -697,6 +678,9 @@
 
 @media (prefers-contrast: high) {
     .meta-category,
+    .meta-date,
+    .meta-type,
+    .meta-author,
     .blog-share-btn,
     .blog-share-btn-footer {
         border: 2px solid #ffffff;
