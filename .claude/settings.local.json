@@ -10,7 +10,8 @@
       "Bash(ssh:*)",
       "Bash(xargs:*)",
       "Bash(find:*)",
-      "Bash(del screenshot.png)"
+      "Bash(del screenshot.png)",
+      "Bash(python:*)"
     ]
   }
 }
