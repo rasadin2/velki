@@ -36,7 +36,7 @@
 					<!--<div class="right-button"><a href="<?php echo esc_url( home_url( '/জরুরি-যোগাযোগ/' ) ); ?>">জরুরি যোগাযোগ</a></div>-->
 					 <!--<div class="search-box"><?php echo do_shortcode( '[wpdreams_ajaxsearchlite]'); ?></div>-->
 				    <div class="search-box">
-						<form role="search" method="get" class="search-form" action="http://localhost/velki/">
+						<form role="search" method="get" class="search-form" action="https://velki.asia/">
 							<div class="search-box-wrap">
 							<input type="submit" class="search-submit" value="Search" />
 							 <label>

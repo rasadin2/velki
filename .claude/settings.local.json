@@ -11,7 +11,9 @@
       "Bash(xargs:*)",
       "Bash(find:*)",
       "Bash(del screenshot.png)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(php import-super-agents.php:*)",
+      "Bash(php import-master-agents.php:*)"
     ]
   }
 }

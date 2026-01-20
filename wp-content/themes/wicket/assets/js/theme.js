@@ -46,7 +46,7 @@ $('.news-ticker-h').show();
 
     $(document).ready(function(){ 
         // Change the placeholder attribute of the input field
-        $('.search-field').attr('placeholder', 'সার্চ...');
+        $('.search-field').attr('placeholder', 'এজেন্ট খুঁজুন...');
     });
 
 

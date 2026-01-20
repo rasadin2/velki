@@ -101,6 +101,7 @@ get_header();
 
 								if ( $specific_agents_query->have_posts() ) {
 									// Use the shortcode rendering but with specific agents
+									echo '<div class="agent-modal-backdrop" id="agent-modal-backdrop-' . esc_attr($group_name) . '"></div>';
 									echo '<div class="velki-agent-list-container">';
 
 									while ( $specific_agents_query->have_posts() ) {
@@ -120,7 +121,18 @@ get_header();
 										// Extract phone numbers and usernames from URLs
 										$whatsapp_number_1 = $whatsapp_url_1 ? str_replace( array('https://wa.me/', 'http://wa.me/', 'wa.me/'), '', $whatsapp_url_1 ) : '';
 										$whatsapp_number_2 = $whatsapp_url_2 ? str_replace( array('https://wa.me/', 'http://wa.me/', 'wa.me/'), '', $whatsapp_url_2 ) : '';
-										$messenger_username = $messenger_url ? str_replace( array('https://m.me/', 'http://m.me/', 'm.me/'), '', $messenger_url ) : '';
+										// Extract messenger username from URL (handles m.me and facebook.com/share URLs)
+										$messenger_username = '';
+										if ($messenger_url) {
+											if (strpos($messenger_url, 'm.me/') !== false) {
+												$messenger_username = str_replace( array('https://m.me/', 'http://m.me/', 'm.me/'), '', $messenger_url );
+											} else {
+												// For facebook.com URLs, extract the last segment
+												$path = trim(parse_url($messenger_url, PHP_URL_PATH), '/');
+												$segments = explode('/', $path);
+												$messenger_username = end($segments);
+											}
+										}
 
 										// Get agent groups
 										$agent_terms = get_the_terms( $agent_post_id, 'agent-group' );
@@ -131,10 +143,13 @@ get_header();
 
 										$is_verified = ( $agent_verified == '1' );
 										$is_premium = ( $agent_premium == '1' );
+
+										// Generate unique ID for modal
+										$unique_id = 'search-agent-' . $agent_post_id . '-' . wp_rand(1000, 9999);
 										?>
 
 										<div class="velki-agent-card">
-											<div class="agent-left-section">
+											<div class="agent-main-section">
 												<div class="agent-photo-wrapper">
 													<?php if ( has_post_thumbnail() ) : ?>
 														<?php the_post_thumbnail('thumbnail', array('class' => 'agent-photo')); ?>
@@ -176,9 +191,34 @@ get_header();
 														</div>
 													<?php endif; ?>
 												</div>
+
+												<?php if ( $whatsapp_url_1 || $whatsapp_url_2 || $messenger_url ) : ?>
+													<button class="agent-contact-toggle" data-target="<?php echo esc_attr($unique_id); ?>" aria-expanded="false" aria-label="Toggle contact info">
+														<svg class="toggle-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+															<path d="M6 9l6 6 6-6"/>
+														</svg>
+													</button>
+												<?php endif; ?>
 											</div>
 
-											<div class="agent-contact-section">
+											<div class="agent-contact-section agent-contact-hidden" id="<?php echo esc_attr($unique_id); ?>">
+												<div class="modal-header">
+													<div class="modal-title-section">
+														<h4 class="modal-title"><?php echo esc_html( $agent_title ); ?></h4>
+														<?php if ( $agent_id_meta ) : ?>
+															<div class="modal-agent-id">
+																<span class="modal-id-label">ID:</span>
+																<span class="modal-id-value"><?php echo esc_html( $agent_id_meta ); ?></span>
+															</div>
+														<?php endif; ?>
+													</div>
+													<button class="modal-close" data-target="<?php echo esc_attr($unique_id); ?>" aria-label="Close">
+														<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+															<line x1="18" y1="6" x2="6" y2="18"></line>
+															<line x1="6" y1="6" x2="18" y2="18"></line>
+														</svg>
+													</button>
+												</div>
 												<?php if ( $whatsapp_url_1 || $whatsapp_url_2 ) : ?>
 													<div class="contact-column whatsapp-column">
 														<div class="contact-header">
@@ -191,36 +231,40 @@ get_header();
 														<?php if ( $whatsapp_number_1 ) : ?>
 															<div class="contact-item">
 																<span class="contact-number"><?php echo esc_html( $whatsapp_number_1 ); ?></span>
-																<button class="copy-btn" data-copy="<?php echo esc_attr( $whatsapp_number_1 ); ?>" title="Copy number">
-																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-																		<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-																		<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-																	</svg>
-																</button>
-																<a href="<?php echo esc_url( $whatsapp_url_1 ); ?>" target="_blank" class="message-btn whatsapp-message-btn">
-																	<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-																		<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-																	</svg>
-																	Message
-																</a>
+																<div class="contact-actions">
+																	<button class="copy-btn" data-copy="<?php echo esc_attr( $whatsapp_number_1 ); ?>" title="Copy number">
+																		<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+																			<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+																			<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+																		</svg>
+																	</button>
+																	<a href="<?php echo esc_url( $whatsapp_url_1 ); ?>" target="_blank" class="message-btn whatsapp-message-btn">
+																		<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+																			<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+																		</svg>
+																		Message
+																	</a>
+																</div>
 															</div>
 														<?php endif; ?>
 
 														<?php if ( $whatsapp_number_2 ) : ?>
 															<div class="contact-item">
 																<span class="contact-number"><?php echo esc_html( $whatsapp_number_2 ); ?></span>
-																<button class="copy-btn" data-copy="<?php echo esc_attr( $whatsapp_number_2 ); ?>" title="Copy number">
-																	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-																		<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-																		<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-																	</svg>
-																</button>
-																<a href="<?php echo esc_url( $whatsapp_url_2 ); ?>" target="_blank" class="message-btn whatsapp-message-btn">
-																	<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-																		<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-																	</svg>
-																	Message
-																</a>
+																<div class="contact-actions">
+																	<button class="copy-btn" data-copy="<?php echo esc_attr( $whatsapp_number_2 ); ?>" title="Copy number">
+																		<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+																			<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+																			<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+																		</svg>
+																	</button>
+																	<a href="<?php echo esc_url( $whatsapp_url_2 ); ?>" target="_blank" class="message-btn whatsapp-message-btn">
+																		<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+																			<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+																		</svg>
+																		Message
+																	</a>
+																</div>
 															</div>
 														<?php endif; ?>
 													</div>
@@ -229,7 +273,7 @@ get_header();
 												<?php if ( $messenger_url ) : ?>
 													<div class="contact-column messenger-column">
 														<div class="contact-header">
-															<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+															<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
 																<path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.975 18.627 0 12 0zm1.193 14.963l-3.056-3.259-5.963 3.259L10.732 8l3.13 3.259L19.752 8l-6.559 6.963z"/>
 															</svg>
 															<span>Messenger</span>
@@ -237,19 +281,21 @@ get_header();
 
 														<div class="contact-item">
 															<span class="contact-number"><?php echo esc_html( $messenger_username ); ?></span>
-															<button class="copy-btn" data-copy="<?php echo esc_attr( $messenger_username ); ?>" title="Copy username">
-																<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-																	<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-																	<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-																</svg>
-															</button>
-															<a href="<?php echo esc_url( $messenger_url ); ?>" target="_blank" class="message-btn messenger-message-btn">
-																<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-																	<line x1="22" y1="2" x2="11" y2="13"></line>
-																	<polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-																</svg>
-																Contact
-															</a>
+															<div class="contact-actions">
+																<button class="copy-btn" data-copy="<?php echo esc_attr( $messenger_username ); ?>" title="Copy username">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+																		<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+																		<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+																	</svg>
+																</button>
+																<a href="<?php echo esc_url( $messenger_url ); ?>" target="_blank" class="message-btn messenger-message-btn">
+																	<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+																		<line x1="22" y1="2" x2="11" y2="13"></line>
+																		<polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+																	</svg>
+																	Contact
+																</a>
+															</div>
 														</div>
 													</div>
 												<?php endif; ?>
@@ -283,8 +329,95 @@ get_header();
 					wp_reset_postdata();
 
 					// Pagination
-					the_posts_navigation();
+					global $wp_query;
+					$total_pages = $wp_query->max_num_pages;
+
+					if ( $total_pages > 1 ) :
+						$current_page = max( 1, get_query_var( 'paged' ) );
 					?>
+					<div class="search-pagination" style="margin-top: 40px; display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap;">
+						<?php
+						// Previous button
+						if ( $current_page > 1 ) :
+						?>
+							<a href="<?php echo esc_url( get_pagenum_link( $current_page - 1 ) ); ?>" class="pagination-btn pagination-prev" style="display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.1);">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M15 18l-6-6 6-6"/>
+								</svg>
+								<?php esc_html_e( 'Previous', 'wicket' ); ?>
+							</a>
+						<?php endif; ?>
+
+						<?php
+						// Page numbers
+						$range = 2; // Number of pages to show on each side of current page
+						$showitems = ( $range * 2 ) + 1;
+
+						// First page
+						if ( $current_page > $range + 1 ) :
+						?>
+							<a href="<?php echo esc_url( get_pagenum_link( 1 ) ); ?>" class="pagination-num" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.1);">1</a>
+							<?php if ( $current_page > $range + 2 ) : ?>
+								<span style="color: #9ca3af; padding: 0 4px;">...</span>
+							<?php endif; ?>
+						<?php endif; ?>
+
+						<?php
+						// Page range
+						for ( $i = max( 1, $current_page - $range ); $i <= min( $total_pages, $current_page + $range ); $i++ ) :
+							if ( $i == $current_page ) :
+							?>
+								<span class="pagination-num pagination-current" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: #fbbf24; color: #000000; border-radius: 8px; font-size: 14px; font-weight: 700;"><?php echo esc_html( $i ); ?></span>
+							<?php else : ?>
+								<a href="<?php echo esc_url( get_pagenum_link( $i ) ); ?>" class="pagination-num" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.1);"><?php echo esc_html( $i ); ?></a>
+							<?php endif; ?>
+						<?php endfor; ?>
+
+						<?php
+						// Last page
+						if ( $current_page < $total_pages - $range ) :
+							if ( $current_page < $total_pages - $range - 1 ) :
+							?>
+								<span style="color: #9ca3af; padding: 0 4px;">...</span>
+							<?php endif; ?>
+							<a href="<?php echo esc_url( get_pagenum_link( $total_pages ) ); ?>" class="pagination-num" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.1);"><?php echo esc_html( $total_pages ); ?></a>
+						<?php endif; ?>
+
+						<?php
+						// Next button
+						if ( $current_page < $total_pages ) :
+						?>
+							<a href="<?php echo esc_url( get_pagenum_link( $current_page + 1 ) ); ?>" class="pagination-btn pagination-next" style="display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #ffffff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 500; transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.1);">
+								<?php esc_html_e( 'Next', 'wicket' ); ?>
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M9 18l6-6-6-6"/>
+								</svg>
+							</a>
+						<?php endif; ?>
+					</div>
+
+					<style>
+					.search-pagination a:hover {
+						background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
+						transform: translateY(-1px);
+						box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+					}
+					@media (max-width: 500px) {
+						.search-pagination {
+							gap: 6px !important;
+						}
+						.search-pagination .pagination-btn {
+							padding: 8px 12px !important;
+							font-size: 13px !important;
+						}
+						.search-pagination .pagination-num {
+							width: 36px !important;
+							height: 36px !important;
+							font-size: 13px !important;
+						}
+					}
+					</style>
+					<?php endif; ?>
 
 				<?php else : ?>
 

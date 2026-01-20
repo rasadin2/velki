@@ -2105,6 +2105,7 @@ function velki_agent_list_shortcode($atts) {
     ob_start();
 
     if ($agents->have_posts()) {
+        echo '<div class="agent-modal-backdrop" id="agent-modal-backdrop"></div>';
         echo '<div class="velki-agent-list-container">';
 
         while ($agents->have_posts()) {
@@ -2130,12 +2131,22 @@ function velki_agent_list_shortcode($atts) {
             $phone_1 = $whatsapp_url_1 ? preg_replace('/[^0-9+]/', '', str_replace('https://wa.me/', '', $whatsapp_url_1)) : '';
             $phone_2 = $whatsapp_url_2 ? preg_replace('/[^0-9+]/', '', str_replace('https://wa.me/', '', $whatsapp_url_2)) : '';
 
-            // Extract messenger username from URL
-            $messenger_username = $messenger_url ? str_replace(array('https://m.me/', 'http://m.me/'), '', $messenger_url) : '';
+            // Extract messenger username from URL (handles m.me and facebook.com/share URLs)
+            $messenger_username = '';
+            if ($messenger_url) {
+                if (strpos($messenger_url, 'm.me/') !== false) {
+                    $messenger_username = str_replace(array('https://m.me/', 'http://m.me/', 'm.me/'), '', $messenger_url);
+                } else {
+                    // For facebook.com URLs, extract the last segment
+                    $path = trim(parse_url($messenger_url, PHP_URL_PATH), '/');
+                    $segments = explode('/', $path);
+                    $messenger_username = end($segments);
+                }
+            }
             ?>
 
             <div class="velki-agent-card">
-                <div class="agent-left-section">
+                <div class="agent-main-section">
                     <div class="agent-photo-wrapper">
                         <?php if (has_post_thumbnail()) : ?>
                             <?php the_post_thumbnail('thumbnail', array('class' => 'agent-photo')); ?>
@@ -2177,9 +2188,36 @@ function velki_agent_list_shortcode($atts) {
                             </div>
                         <?php endif; ?>
                     </div>
+
+                    <?php if ($whatsapp_url_1 || $whatsapp_url_2 || $messenger_url) :
+                        $unique_id = 'agent-' . get_the_ID() . '-' . wp_rand(1000, 9999);
+                    ?>
+                        <button class="agent-contact-toggle" data-target="<?php echo esc_attr($unique_id); ?>" aria-expanded="false" aria-label="Toggle contact info">
+                            <svg class="toggle-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 9l6 6 6-6"/>
+                            </svg>
+                        </button>
+                    <?php endif; ?>
                 </div>
 
-                <div class="agent-contact-section">
+                <div class="agent-contact-section agent-contact-hidden" id="<?php echo esc_attr($unique_id); ?>">
+                    <div class="modal-header">
+                        <div class="modal-title-section">
+                            <h4 class="modal-title"><?php the_title(); ?></h4>
+                            <?php if ($agent_id) : ?>
+                                <div class="modal-agent-id">
+                                    <span class="modal-id-label">ID:</span>
+                                    <span class="modal-id-value"><?php echo esc_html($agent_id); ?></span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <button class="modal-close" data-target="<?php echo esc_attr($unique_id); ?>" aria-label="Close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
                     <?php if ($whatsapp_url_1 || $whatsapp_url_2) : ?>
                         <div class="contact-column whatsapp-column">
                             <div class="contact-header">
@@ -2192,36 +2230,40 @@ function velki_agent_list_shortcode($atts) {
                             <?php if ($phone_1) : ?>
                                 <div class="contact-item">
                                     <span class="contact-number"><?php echo esc_html($phone_1); ?></span>
-                                    <button class="copy-btn" data-copy="<?php echo esc_attr($phone_1); ?>" title="Copy number">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                        </svg>
-                                    </button>
-                                    <a href="<?php echo esc_url($whatsapp_url_1); ?>" target="_blank" class="message-btn whatsapp-message-btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                        </svg>
-                                        Message
-                                    </a>
+                                    <div class="contact-actions">
+                                        <button class="copy-btn" data-copy="<?php echo esc_attr($phone_1); ?>" title="Copy number">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </button>
+                                        <a href="<?php echo esc_url($whatsapp_url_1); ?>" target="_blank" class="message-btn whatsapp-message-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            Message
+                                        </a>
+                                    </div>
                                 </div>
                             <?php endif; ?>
 
                             <?php if ($phone_2) : ?>
                                 <div class="contact-item">
                                     <span class="contact-number"><?php echo esc_html($phone_2); ?></span>
-                                    <button class="copy-btn" data-copy="<?php echo esc_attr($phone_2); ?>" title="Copy number">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                        </svg>
-                                    </button>
-                                    <a href="<?php echo esc_url($whatsapp_url_2); ?>" target="_blank" class="message-btn whatsapp-message-btn">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                        </svg>
-                                        Message
-                                    </a>
+                                    <div class="contact-actions">
+                                        <button class="copy-btn" data-copy="<?php echo esc_attr($phone_2); ?>" title="Copy number">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </button>
+                                        <a href="<?php echo esc_url($whatsapp_url_2); ?>" target="_blank" class="message-btn whatsapp-message-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                            </svg>
+                                            Message
+                                        </a>
+                                    </div>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -2230,7 +2272,7 @@ function velki_agent_list_shortcode($atts) {
                     <?php if ($messenger_url) : ?>
                         <div class="contact-column messenger-column">
                             <div class="contact-header">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.975 18.627 0 12 0zm1.193 14.963l-3.056-3.259-5.963 3.259L10.732 8l3.13 3.259L19.752 8l-6.559 6.963z"/>
                                 </svg>
                                 <span>Messenger</span>
@@ -2238,19 +2280,21 @@ function velki_agent_list_shortcode($atts) {
 
                             <div class="contact-item">
                                 <span class="contact-number"><?php echo esc_html($messenger_username); ?></span>
-                                <button class="copy-btn" data-copy="<?php echo esc_attr($messenger_username); ?>" title="Copy username">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                </button>
-                                <a href="<?php echo esc_url($messenger_url); ?>" target="_blank" class="message-btn messenger-message-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                                    </svg>
-                                    Contact
-                                </a>
+                                <div class="contact-actions">
+                                    <button class="copy-btn" data-copy="<?php echo esc_attr($messenger_username); ?>" title="Copy username">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                    <a href="<?php echo esc_url($messenger_url); ?>" target="_blank" class="message-btn messenger-message-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                        </svg>
+                                        Contact
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -2287,32 +2331,55 @@ function velki_agent_list_inline_css() {
     ?>
     <style>
     .velki-agent-list-container {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        max-width: 1400px;
-        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Modal Backdrop */
+    .agent-modal-backdrop {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9998;
+        backdrop-filter: blur(4px);
+    }
+
+    .agent-modal-backdrop.active {
+        display: block;
     }
 
     .velki-agent-card {
         background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        border-radius: 16px;
-        padding: 24px;
+        border-radius: 12px;
+        padding: 10px;
         display: flex;
-        gap: 32px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .velki-agent-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+    body:not(.modal-open) .velki-agent-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     }
 
-    .agent-left-section {
+    .agent-main-section {
         display: flex;
-        gap: 20px;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
     }
 
     .agent-photo-wrapper {
@@ -2321,9 +2388,9 @@ function velki_agent_list_inline_css() {
     }
 
     .agent-photo {
-        width: 100px;
-        height: 100px;
-        border-radius: 12px;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
         object-fit: cover;
         border: 2px solid rgba(255, 255, 255, 0.1);
     }
@@ -2334,102 +2401,224 @@ function velki_agent_list_inline_css() {
         align-items: center;
         justify-content: center;
         color: rgba(255, 255, 255, 0.3);
-        font-size: 48px;
+        font-size: 24px;
     }
 
     .agent-verified-badge {
-        position: absolute;
-        bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #fbbf24;
-        color: #1e293b;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 3px solid #1e293b;
+        position: absolute !important;
+        bottom: -2px !important;
+        right: -2px !important;
+        left: auto !important;
+        transform: none !important;
+        background: linear-gradient(180deg, #FEC611 0%, #FFB800 100%) !important;
+        color: #1e293b !important;
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 2px solid #1e293b !important;
     }
 
     .agent-verified-badge svg {
-        width: 18px;
-        height: 18px;
+        width: 9px !important;
+        height: 9px !important;
     }
 
     .agent-info {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        align-items: center;
+        gap: 2px;
+        flex: 1;
+        min-width: 0;
     }
 
     .agent-name-row {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 4px;
+        max-width: 100%;
     }
 
     .agent-name {
-        font-size: 24px;
-        font-weight: 700;
+        font-size: 13px;
+        font-weight: 600;
         color: #ffffff;
         margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .agent-premium-crown {
-        font-size: 20px;
+        font-size: 12px;
+        flex-shrink: 0;
     }
 
     .agent-group {
         color: #94a3b8;
-        font-size: 14px;
+        font-size: 10px;
     }
 
     .agent-rating {
-        font-size: 14px;
+        font-size: 10px;
         line-height: 1;
     }
 
     .agent-id-section {
         display: flex;
         align-items: center;
-        gap: 8px;
-        margin-top: 4px;
+        gap: 4px;
     }
 
     .agent-id-label {
         color: #fbbf24;
-        font-size: 14px;
+        font-size: 10px;
         font-weight: 600;
     }
 
     .agent-id-value {
         color: #fbbf24;
-        font-size: 18px;
+        font-size: 11px;
         font-weight: 700;
     }
 
-    .agent-contact-section {
+    /* Toggle Button */
+    .agent-contact-toggle {
+        background: rgba(16, 185, 129, 0.2);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        border-radius: 6px;
+        padding: 6px 10px;
+        color: #10b981;
+        cursor: pointer;
+        transition: all 0.2s ease;
         display: flex;
-        gap: 32px;
-        flex: 1;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .agent-contact-toggle:hover {
+        background: rgba(16, 185, 129, 0.3);
+        color: #ffffff;
+    }
+
+    .agent-contact-toggle.active {
+        background: #10b981;
+        border-color: #10b981;
+        color: #ffffff;
+    }
+
+    .agent-contact-toggle .toggle-icon {
+        transition: transform 0.2s ease;
+        width: 16px;
+        height: 16px;
+    }
+
+    .agent-contact-toggle.active .toggle-icon {
+        transform: rotate(180deg);
+    }
+
+    /* Contact Section - Modal */
+    .agent-contact-section {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        border-radius: 16px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        min-width: 300px;
+        max-width: 90vw;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .agent-contact-section.agent-contact-hidden {
+        display: none !important;
+    }
+
+    .agent-contact-section .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        margin-bottom: 4px;
+    }
+
+    .agent-contact-section .modal-title-section {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .agent-contact-section .modal-title {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .agent-contact-section .modal-agent-id {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .agent-contact-section .modal-id-label {
+        color: #fbbf24;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .agent-contact-section .modal-id-value {
+        color: #fbbf24;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .agent-contact-section .modal-close {
+        background: #ef4444;
+        border: none;
+        color: #ffffff;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+    }
+
+    .agent-contact-section .modal-close:hover {
+        background: #dc2626;
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5);
     }
 
     .contact-column {
-        flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 8px;
     }
 
     .contact-header {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         color: #10b981;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 12px;
         margin-bottom: 4px;
     }
 
@@ -2438,24 +2627,32 @@ function velki_agent_list_inline_css() {
     }
 
     .contact-header svg {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
     }
 
     .contact-item {
         background: rgba(15, 23, 42, 0.6);
-        border-radius: 8px;
-        padding: 12px;
+        border-radius: 6px;
+        padding: 8px;
         display: flex;
-        align-items: center;
-        gap: 10px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
     }
 
     .contact-number {
         color: #e2e8f0;
-        font-size: 14px;
+        font-size: 12px;
         font-family: 'Courier New', monospace;
-        flex: 1;
+        text-align: center;
+        word-break: break-all;
+    }
+
+    .contact-actions {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
     }
 
     .copy-btn {
@@ -2487,15 +2684,17 @@ function velki_agent_list_inline_css() {
         color: #ffffff;
         border: none;
         border-radius: 6px;
-        padding: 8px 16px;
-        font-size: 13px;
+        padding: 6px 12px;
+        font-size: 11px;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
         text-decoration: none;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
+        flex: 1;
+        justify-content: center;
     }
 
     .whatsapp-message-btn {
@@ -2515,39 +2714,148 @@ function velki_agent_list_inline_css() {
     }
 
     .message-btn svg {
-        width: 14px;
-        height: 14px;
+        width: 12px;
+        height: 12px;
     }
 
     /* Responsive Design */
-    @media (max-width: 1024px) {
-        .velki-agent-card {
-            flex-direction: column;
-        }
-
-        .agent-contact-section {
-            flex-direction: column;
+    @media (max-width: 1400px) {
+        .velki-agent-list-container {
+            grid-template-columns: repeat(4, 1fr);
         }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1100px) {
+        .velki-agent-list-container {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+    }
+
+    @media (max-width: 800px) {
+        .velki-agent-list-container {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .velki-agent-list-container {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 6px !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+        }
+
         .velki-agent-card {
-            padding: 16px;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            padding: 10px 12px !important;
+            border-radius: 10px !important;
+            margin: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            gap: 12px !important;
         }
 
-        .agent-left-section {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+        .agent-main-section {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 12px !important;
+            flex: 1 !important;
+            min-width: 0 !important;
         }
 
-        .agent-name {
-            font-size: 20px;
+        .agent-photo-wrapper {
+            flex-shrink: 0 !important;
+            box-shadow: 0px 0px 0px 3px #364153 !important;
+            border-radius: 12px !important;
         }
 
         .agent-photo {
-            width: 80px;
-            height: 80px;
+            width: 55px !important;
+            height: 55px !important;
+            border-radius: 10px !important;
+        }
+
+        .agent-info {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 2px !important;
+            flex: 1 !important;
+            min-width: 0 !important;
+        }
+
+        .agent-name-row {
+            display: flex !important;
+            align-items: center !important;
+            gap: 3px !important;
+            max-width: 100% !important;
+        }
+
+        .agent-name {
+            font-size: 15px !important;
+            font-weight: 700 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        .agent-premium-crown {
+            font-size: 14px !important;
+        }
+
+        .agent-group {
+            font-size: 12px !important;
+        }
+
+        .agent-rating {
+            font-size: 11px !important;
+        }
+
+        .agent-id-section {
+            display: flex !important;
+            gap: 4px !important;
+            margin-top: 2px !important;
+        }
+
+        .agent-id-label {
+            font-size: 11px !important;
+        }
+
+        .agent-id-value {
+            font-size: 13px !important;
+            font-weight: 700 !important;
+        }
+
+        .agent-verified-badge {
+            width: 18px !important;
+            height: 18px !important;
+            bottom: -2px !important;
+            right: -2px !important;
+            border-width: 2px !important;
+        }
+
+        .agent-verified-badge svg {
+            width: 10px !important;
+            height: 10px !important;
+        }
+
+        .agent-contact-toggle {
+            padding: 5px 8px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .agent-contact-toggle .toggle-icon {
+            width: 14px !important;
+            height: 14px !important;
         }
     }
     </style>
@@ -2565,14 +2873,100 @@ function velki_agent_list_inline_js() {
     ?>
     <script>
     (function() {
+        var currentOpenModal = null;
+        var currentToggleBtn = null;
+
+        // Get all backdrops (supports both single and multiple backdrops)
+        function getAllBackdrops() {
+            return document.querySelectorAll('.agent-modal-backdrop');
+        }
+
+        function closeModal() {
+            if (currentOpenModal) {
+                currentOpenModal.classList.add('agent-contact-hidden');
+            }
+            if (currentToggleBtn) {
+                currentToggleBtn.classList.remove('active');
+                currentToggleBtn.setAttribute('aria-expanded', 'false');
+            }
+            // Hide all backdrops
+            getAllBackdrops().forEach(function(backdrop) {
+                backdrop.classList.remove('active');
+            });
+            document.body.style.overflow = '';
+            document.body.classList.remove('modal-open');
+            currentOpenModal = null;
+            currentToggleBtn = null;
+        }
+
+        function openModal(modal, toggleBtn) {
+            // Close any open modal first
+            closeModal();
+
+            modal.classList.remove('agent-contact-hidden');
+            if (toggleBtn) {
+                toggleBtn.classList.add('active');
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            }
+            // Show all backdrops
+            getAllBackdrops().forEach(function(backdrop) {
+                backdrop.classList.add('active');
+            });
+            document.body.style.overflow = 'hidden';
+            document.body.classList.add('modal-open');
+            currentOpenModal = modal;
+            currentToggleBtn = toggleBtn;
+        }
+
+        // Toggle contact modal
         document.addEventListener('click', function(e) {
-            if (e.target.closest('.copy-btn')) {
+            // Open modal button
+            var toggleBtn = e.target.closest('.agent-contact-toggle');
+            if (toggleBtn) {
                 e.preventDefault();
-                const btn = e.target.closest('.copy-btn');
-                const textToCopy = btn.getAttribute('data-copy');
+                e.stopPropagation();
+
+                var targetId = toggleBtn.getAttribute('data-target');
+                if (!targetId) return;
+
+                var contactSection = document.getElementById(targetId);
+                if (!contactSection) return;
+
+                var isHidden = contactSection.classList.contains('agent-contact-hidden');
+
+                if (isHidden) {
+                    openModal(contactSection, toggleBtn);
+                } else {
+                    closeModal();
+                }
+                return;
+            }
+
+            // Close button in modal
+            var closeBtn = e.target.closest('.modal-close');
+            if (closeBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeModal();
+                return;
+            }
+
+            // Click on backdrop closes modal
+            if (e.target.classList.contains('agent-modal-backdrop')) {
+                closeModal();
+                return;
+            }
+
+            // Copy functionality
+            var copyBtn = e.target.closest('.copy-btn');
+            if (copyBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var textToCopy = copyBtn.getAttribute('data-copy');
 
                 // Create temporary textarea
-                const textarea = document.createElement('textarea');
+                var textarea = document.createElement('textarea');
                 textarea.value = textToCopy;
                 textarea.style.position = 'fixed';
                 textarea.style.opacity = '0';
@@ -2583,19 +2977,26 @@ function velki_agent_list_inline_js() {
                     document.execCommand('copy');
 
                     // Visual feedback
-                    const originalHTML = btn.innerHTML;
-                    btn.classList.add('copied');
-                    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                    var originalHTML = copyBtn.innerHTML;
+                    copyBtn.classList.add('copied');
+                    copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
 
                     setTimeout(function() {
-                        btn.classList.remove('copied');
-                        btn.innerHTML = originalHTML;
+                        copyBtn.classList.remove('copied');
+                        copyBtn.innerHTML = originalHTML;
                     }, 2000);
                 } catch (err) {
                     console.error('Failed to copy:', err);
                 }
 
                 document.body.removeChild(textarea);
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && currentOpenModal) {
+                closeModal();
             }
         });
     })();
