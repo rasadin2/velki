@@ -1294,3 +1294,6 @@ span.pagination-num.pagination-current {
 :-moz-placeholder { /* Firefox 18- */
  color: #99A1AF;
 }
+.velki-blog-load-more {
+    padding: 16px 32px 16px  10px !important;
+}
