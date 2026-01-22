@@ -1281,3 +1281,16 @@ a:hover {
 span.pagination-num.pagination-current {
     background: linear-gradient(180deg, #FFA726 0%, #FF9800 100%) !important;
 }
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #99A1AF;
+}
+::-moz-placeholder { /* Firefox 19+ */
+ color: #99A1AF;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #99A1AF;
+}
+:-moz-placeholder { /* Firefox 18- */
+ color: #99A1AF;
+}
