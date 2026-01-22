@@ -198,6 +198,9 @@ body .velki-blog-listing-wrapper {
 }
 /*Mobile View Start*/
 @media only screen and (max-width:767px) {
+.wicket-footer .widget-title {
+    margin-top: 28px;
+}
 .wicket-footer ul li a {
     font-size: 15px;
 }
@@ -586,6 +589,9 @@ body .wicket-brand-wrap {
 .menu-social-media-container ul {
     gap: 0 15px;
 }
+.number-text {
+    margin: 0 auto;
+}
 }
 /*Mobile View Small*/
 @media only screen and (max-width:360px) {
@@ -609,6 +615,7 @@ body .wicket-brand-wrap {
     text-align: center;
     justify-content: center;
 }
+
 }
 /*Mobile Tiny Small*/
 @media only screen and (max-width:320px) {

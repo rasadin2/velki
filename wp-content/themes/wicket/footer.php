@@ -41,7 +41,7 @@
 		<div class="container">
 		<div class="border-bottom-copy">
 			<div class="row">
-				<div class="col-md-6 footer-copyright-widgets1">
+				<div class="col-md-12 footer-copyright-widgets1">
 					<?php dynamic_sidebar( 'copyright-widget-1' ); ?>
 				</div>
 				<div class="col-md-6 footer-copyright-widgets2">

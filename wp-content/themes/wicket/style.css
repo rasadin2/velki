@@ -544,7 +544,7 @@ table, th, td {
 	padding: 6px 15px;
 }
 table tr:nth-child(2n) {
-    background: #030712;
+    background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%);
 }
 .form-group {
 	margin-bottom: 2rem;
@@ -585,7 +585,7 @@ html {
 }
 
 body {
-	/* Fallback for when there is no custom background color defined. */
+	background: linear-gradient(135deg, #101828 0%, #0F1729 50%, #030712 100%);
 }
 
 hr {
@@ -1133,20 +1133,18 @@ span.value-2 > a {
     border-radius: 16px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background: linear-gradient(135deg, #1E2939 0%, #101828 100%) !important;
-    border: 0.8px solid #364153 !important;
+    background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%) !important;
+	border: 0.8px solid rgba(255, 255, 255, 0.2) !important;
 }
 .velki-blog-listing-wrapper {
     padding: 0px 20px !important;
-    background: #030712 !important;
+    background: transparent !important;
     min-height: 400px;
 }
 .velki-blog-excerpt {
-    color: #99A1AF !important;
+    color: #f2f2f2 !important;
 }
-.single-post{
-	background: #030712;
-}
+
 .single-post .entry-content,
 .single-post ul li, 
 .single-post ol li,
@@ -1177,9 +1175,109 @@ span.value-2 > a {
     vertical-align: bottom;
     border-radius: 16px;
 }
+
 .velki-agent-card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(135deg, #1E2939 0%, #101828 100%) !important;
-    border-radius: 24px !importan;
-    border: 0.8px solid #364153 !important;
+	    background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%) !important;
+   /* background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%) !important;*/
+    border: 0.8px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 14px !important;
+}
+
+.customer-service-box {
+	    background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%) !important;
+}
+.customer-service-thum-box {
+	    background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%) !important;
+		border: 0.8px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+
+.maste-agent-box1-bg{
+	background: linear-gradient(180deg, #431D42 0%, #6B2D6A 100%);
+	box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+.maste-agent-box2-bg{
+	background: linear-gradient(90deg, #155DFC 0%, #1447E6 100%);
+box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+}
+
+.maste-agent-box3-bg{
+	background: linear-gradient(180deg, #FFA726 0%, #FF9800 100%);
+box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+}
+.maste-agent-box4-bg{
+	background: linear-gradient(90deg, #00A63E 0%, #008236 100%);
+box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+}
+
+.velki-blog-load-more {
+	outline:0 !important;
+    background: linear-gradient(180deg, #FFA726 0%, #FF9800 100%) !important;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.agent-contact-section {
+    background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%) !important;
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+}
+.velki-blog-date, 
+.velki-blog-author {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #d0d0d0 !important;
+    font-size: 13px;
+}
+.velki-blog-category {
+   color: #000 !important;
+   background: linear-gradient(90deg, rgba(255, 167, 38, 0.9) 0%, rgba(255, 152, 0, 0.9) 100%) !important;
+}
+.agent-photo {
+    width: 48px !important;
+    height: 48px !important;
+}
+.velki-blog-grid a:hover{
+	color: #e68f0f;
+}
+a:hover {
+    color: #e68f0f;
+    text-decoration: underline;
+}
+
+.velki-faq-icon::before {
+    content: '?';
+       color: #080e1c !important;
+    font-weight: 700;
+    font-size: 16px;
+}
+.search-header{
+	background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%) !important;
+	border: 0.8px solid rgba(255, 255, 255, 0.2) !important;
+}
+.search-results .agent-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 9998;
+    backdrop-filter: blur(4px);
+}
+
+.search-min-box{
+	    background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%) !important;
+    border: 0.8px solid rgba(255, 255, 255, 0.2) !important;
+}
+.no-results div{
+	  background: linear-gradient(90deg, #101828 0%, #431D42 50%, #101828 100%) !important;
+    border: 0.8px solid rgba(255, 255, 255, 0.2) !important;
+}
+span.pagination-num.pagination-current {
+    background: linear-gradient(180deg, #FFA726 0%, #FF9800 100%) !important;
 }

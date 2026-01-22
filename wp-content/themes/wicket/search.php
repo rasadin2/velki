@@ -35,7 +35,7 @@ get_header();
 						</div>
 						<div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
 							<span style="color: #9ca3af; font-size: 15px;"><?php esc_html_e( 'Searching for:', 'wicket' ); ?></span>
-							<span style="background: rgba(251, 191, 36, 0.1); color: #fbbf24; padding: 6px 16px; border-radius: 8px; font-size: 15px; font-weight: 600; border: 1px solid rgba(251, 191, 36, 0.2);">
+							<span class="search-min-box" style="background: rgba(251, 191, 36, 0.1); color: #fbbf24; padding: 6px 16px; border-radius: 8px; font-size: 15px; font-weight: 600; border: 1px solid rgba(251, 191, 36, 0.2);">
 								<?php echo esc_html( get_search_query() ); ?>
 							</span>
 						</div>
