@@ -585,7 +585,10 @@ html {
 }
 
 body {
-	background: linear-gradient(135deg, #101828 0%, #0F1729 50%, #030712 100%);
+	  background-color: #eee;
+}
+body, html {
+    background-color: #eee;
 }
 
 hr {
@@ -1296,4 +1299,36 @@ span.pagination-num.pagination-current {
 }
 .velki-blog-load-more {
     padding: 16px 32px 16px  10px !important;
+}
+
+.inner-container-box{
+	
+}
+.wicket-footer {
+    min-height: 400px;
+    background-color: #101828;
+    padding: 70px 0px 0px 0px;
+    border-top: 0px solid #1E2939;
+    display: none;
+}
+.search-box-wrap {
+   display:none;
+}
+.menu-wrap {
+    min-width: 1350px;
+    background-color: #1e1e1e;
+    line-height: 30px;
+	padding: 0 20px;
+}
+.image-gallery-box img.swiper-slide-image {
+    height: 245px;
+    object-fit: cover;
+}
+.wicket-navbar-toggler{
+	display:none;
+}
+
+.play-button-text .elementor-button {
+    padding: 16px 23px 10px 23px !important;
+	font-weight: bold !important;
 }

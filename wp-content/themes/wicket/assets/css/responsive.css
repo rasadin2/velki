@@ -33,9 +33,31 @@
 .footer-copyright-widgets1 .textwidget {
     gap: 15px;
 }
+.head-right-button {
+    max-width: 400px;
+    width: 100%;
+    margin-right: 20px;
+}
+.menu-wrap .full-wrap ul li a {
+    color: #fff;
+    padding: 0 8px;
+    font-size: 11px;
+    font-weight: 700;
+    position: relative;
+    text-decoration: none;
+    display: block;
+}
+.menu-wrap .full-wrap {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1245px;
+}
 }
 /*Tab Landscape*/
 @media only screen and (max-width:1024px) {
+.menu-wrap {
+    display: none;
+}
   .agends-menubar ul {
     padding-left:0px;
     display: flex;
@@ -198,6 +220,54 @@ body .velki-blog-listing-wrapper {
 }
 /*Mobile View Start*/
 @media only screen and (max-width:767px) {
+.wicket-navbar {
+    min-height: 48px;
+}
+.head-right-button {
+    margin-right: 15px;
+}
+.gallery-section-box h3.elementor-heading-title {
+    font-size: 12px !important;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.image-gallery-box img.swiper-slide-image {
+    height:70px !important;
+    object-fit: cover;
+}
+.play-button-text a:after {
+    position: absolute;
+    z-index: -1;
+    bottom: 0;
+    right: 0;
+    width: 50px;
+    height: 100%;
+    background-color: #ffb80c;
+    content: "";
+}
+body .play-button-text .elementor-button {
+     padding:5px 5px 6px 1px !important;
+     font-size: 11px !important;
+}
+.policy-link li:after, .policy-link li:first-child:before {
+    margin: 0 6px;
+    content: "-";
+	display:none;
+}
+.policy-link li {
+    margin-bottom: 0;
+    list-style-type: none;
+    line-height: 23px;
+	display: inline-block;
+	margin:0px 3px;
+}
+.policy-link {
+    display: block;
+    margin: 0;
+    text-align: center;
+	 padding: 0;
+}
 .wicket-footer .widget-title {
     margin-top: 28px;
 }
@@ -472,7 +542,7 @@ section.no-results.not-found {
     margin-bottom: 18px;
 }
 body .wicket-brand-wrap {
-    height: 86px;
+    height: 55px;
 }
 .footer-colume-1 {
     -webkit-box-flex: 0;
@@ -619,6 +689,13 @@ body .wicket-brand-wrap {
 }
 /*Mobile Tiny Small*/
 @media only screen and (max-width:320px) {
+body .play-button-text .elementor-button {
+    padding: 5px 4px 6px 1px !important;
+    font-size: 8px !important;
+}
+.play-button-text a:after {
+    width: 38px;
+}
 .list-box .social-connection-group span.value-2 {
     min-width: 113px;
     font-size: 13px;
