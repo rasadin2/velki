@@ -1332,3 +1332,6 @@ span.pagination-num.pagination-current {
     padding: 16px 23px 10px 23px !important;
 	font-weight: bold !important;
 }
+.gallery-section-box a{
+	text-decoration:none !important;
+}
