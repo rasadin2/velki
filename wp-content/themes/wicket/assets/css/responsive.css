@@ -716,4 +716,7 @@ body .play-button-text .elementor-button {
     padding: 5px 11px !important;
     font-size: 10px !important;
 }
+.head-right-button ul li a {
+    padding: 5px 8px;
+}
 }
